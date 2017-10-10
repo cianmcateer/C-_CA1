@@ -5,7 +5,6 @@
 using std::string;
 using std::cout;
 using std::cerr;
-using std::cin;
 using std::endl;
 
 
@@ -56,11 +55,12 @@ void read_file() {
     std::ifstream help_menu(path);
     string line;
     if(help_menu.is_open()) {
+        // Will read line until new line is detected
         while(std::getline(help_menu,line)) {
             cout << line << endl;
         }
     } else {
-        cerr << "Error opening file" << endl;
+        std::cerr << "Error opening file" << endl;
     }
 
 }
