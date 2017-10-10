@@ -1,0 +1,12 @@
+/************************************************************/
+*    Hello, please choose from one of the following options *
+*    0. exit without save                                   *
+*    1. Display by name                                     *
+*    2. Display by grade                                    *
+*    3. Add student                                         *
+*    4. Create new group                                    *
+*    5. delete group                                        *
+*    6. save current data                                   *
+*    7. exit and save                                       *
+*    8. create webpage                                      *        
+/************************************************************/
