@@ -1,12 +1,17 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using std::string;
 using std::cout;
+using std::cerr;
 using std::cin;
 using std::endl;
 
+
+void read_file();
 void init();
+void menu();
 bool login();
 bool is_password(string password);
 
@@ -42,8 +47,26 @@ void init() {
     }
 
     cout << "Welcome " << user_name << "..." << endl;
+    menu();
 
+}
 
+void read_file() {
+    const string path = "/Users/CianMcAteer/Desktop/year_3/semester_1/C++/C++_CA1/files/help.txt";
+    std::ifstream help_menu(path);
+    string line;
+    if(help_menu.is_open()) {
+        while(std::getline(help_menu,line)) {
+            cout << line << endl;
+        }
+    } else {
+        cerr << "Error opening file" << endl;
+    }
+
+}
+
+void menu() {
+    read_file();
 }
 
 bool is_password(string password) {
