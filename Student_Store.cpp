@@ -29,5 +29,5 @@ void Student_Store::clear() {
 }
 
 void Student_Store::print() {
-    
+
 }
