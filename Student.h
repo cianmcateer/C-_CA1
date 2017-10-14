@@ -27,23 +27,23 @@ public:
     ~Student();
     bool has_passed();
 
-    inline string get_name() {
+    inline string get_name() const{
         return name;
     }
 
-    inline int get_age() {
+    inline int get_age() const{
         return age;
     }
 
-    inline int get_attendance() {
+    inline int get_attendance() const{
         return attendance;
     }
 
-    inline float get_gpa() {
+    inline float get_gpa() const{
         return gpa;
     }
 
-    inline string get_comment() {
+    inline string get_comment() const{
         return comment;
     }
 
@@ -75,4 +75,9 @@ inline std::ostream& operator<<(std::ostream& output_stream, Student& s) {
     << " COMMENT: " << s.get_comment() << endl;
 
     return output_stream;
+}
+
+inline std::istream& operator>>(std::istream& input_stream, Student& s) {
+
+    return input_stream;
 }
