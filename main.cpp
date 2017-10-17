@@ -18,7 +18,7 @@ bool login();
 bool is_password(string password);
 
 int main(void) {
-    Student_Store s;
+
     init();
     return 0;
 }
@@ -54,9 +54,9 @@ void init() {
 
 }
 
-void read_file() {
+void read_help_file() {
     // Fix file path problem
-    const string help_path = "/Users/CianMcAteer/Desktop/year_3/semester_1/C++/C++_CA1/files/help.txt";
+    const string help_path = "files/help.txt";
     std::ifstream help_menu(help_path);
     string line;
     if(help_menu.is_open()) {
@@ -71,43 +71,113 @@ void read_file() {
 }
 
 void menu() {
-    read_file();
 
     int choice;
     Student_Store st;
+
     while(true) {
+        read_help_file(); // Help menu
         cin >> choice;
 
         switch(choice) {
-            case 0:
+            case 0: {
                 cout << "Goodbye!" << endl;
                 exit(0);
                 break;
-
-            case 1:
+            }
+            case 1:{
                 st.print();
                 break;
-                
-            case 2:
+            }
+            case 2:{
+                cout << "Display by grade" << endl;
                 break;
+            }
+            case 3:{
+                cout << "Display class" << endl;
 
-            case 3:
+                string display_teacher;
+                cin >> display_teacher;
+                st.display_group(display_teacher);
                 break;
+            }
+            case 4:{
+                cout << "Update Student" << endl;
+                /*cout << "Please enter students teacher" << endl;
+                string update_teacher;
+                cin >> update_teacher;
 
-            case 4:
-                break;
+                cout << "Now enter student name" << endl;
+                cin >> student_name;
 
-            case 5:
+                cout << "Age" << endl;
+                cin >> age;
+
+                cout << "Attendance" << endl;
+                cin >> attendance;
+
+                cout << "GPA" << endl;
+                cin >> gpa;
+
+                cout << "Comment" << endl;
+                cin >> comment;
+
+                st.update(teacher,student_name,age,attendance,gpa,comment);*/
                 break;
+            }
+            case 5: {
+
+                // Clear 'cin of data'
+                cin.ignore();
+                string add_teacher;
+                cout << "Add students teacher" << endl;
+                std::getline(cin,add_teacher); // Allow to read white spaces
+
+                cout << "Student name" << endl;
+                string add_student_name;
+                std::getline(cin,add_student_name);
+
+                cout << "Age" << endl;
+                int add_age;
+                cin >> add_age;
+
+                cout << "Attendance" << endl;
+                int add_attendance;
+                cin >> add_attendance;
+
+                cout << "GPA" << endl;
+                float add_gpa;
+                cin >> add_gpa;
+
+                cout << "Comment" << endl;
+                string add_comment;
+                cin.ignore();
+                std::getline(cin,add_comment);
+
+                const Student new_student(add_student_name,add_age,add_attendance,add_gpa,add_comment);
+
+                st.add(add_teacher,new_student);
+
+                // print students first name only
+                cout << add_student_name.substr(0,add_student_name.find(' ')) << " has been added!" << endl;
+
+                break;
+            }
 
             case 6:
+                cout << "Create new Group" << endl;
                 break;
 
             case 7:
                 break;
 
             case 8:
+                st.save();
+                cout << "Data has been saved!" << endl;
                 break;
+
+            default:
+                cout << "Invalid input please try again." << endl;
         }
     }
 }
