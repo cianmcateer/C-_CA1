@@ -2,7 +2,7 @@
 
 Student_Store::Student_Store() {
     Student_Store::load(school_data);
-    school_data = read_file();
+//    school_data = read_file();
 }
 
 Student_Store::~Student_Store() {}
@@ -25,8 +25,8 @@ void Student_Store::load(map<string,vector<Student> >& school_data) {
     vec2.push_back(s5);
     vec2.push_back(s6);
 
-    school_data["Barbara"] = vec1;
-    school_data["John"] = vec2;
+    school_data["Barbara Jones"] = vec1;
+    school_data["John McDonald"] = vec2;
 
 }
 
@@ -35,6 +35,10 @@ bool Student_Store::is_full(string& teacher) {
         return true;
     }
     return false;
+}
+
+void Student_Store::add(string& teacher, const Student& s) {
+    school_data[teacher].push_back(s);
 }
 
 void Student_Store::clear() {
@@ -50,8 +54,38 @@ void Student_Store::print() {
     }
 }
 
+
+
 map<string,vector<Student> > Student_Store::read_file() {
-    
+/*    const string file_path = "data.txt";
+    std::ifstream read_file(file_path);
+
+    map<string,vector<Student> > file_data;
+
+    string teacher;
+    string student_name;
+    int age;
+    float gpa;
+    int attendance;
+    string comment;
+
+    vector<Student> students;
+    Student s;
+
+    if(!read_file.is_open()) {
+        std::cerr << "Error opening file" << endl;
+    } else {
+        while(!read_file.eof()) {
+            read_file >> teacher;
+            while(read_file >> s.get_name() >> s.get_age() >> s.get_gpa() >> s.get_attendance() >> s.get_comment()) {
+                students.push_back(s);
+            }
+            file_data[teacher] = students;
+        }
+        read_file.close();
+    }
+
+    return file_data;*/
 }
 
 void Student_Store::update(string& teacher, string& name, int& age, int& attendance, int& gpa, string& comment) {
