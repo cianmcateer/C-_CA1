@@ -8,26 +8,22 @@
 #include <ostream>
 
 
-using std::string;
-using std::map;
-using std::cout;
-using std::endl;
-using std::vector;
 
 class Student {
 private:
-    string name;
+    std::string name;
     int age;
-    float gpa;
     int attendance;
-    string comment;
+    float gpa;
+    std::string comment;
 
 public:
-    Student(string name, int age, int attendance, float gpa, string comment);
+    Student(std::string name, int age, int attendance, float gpa, std::string comment);
+    Student();
     ~Student();
     bool has_passed();
 
-    inline string get_name() const{
+    inline std::string get_name() const{
         return name;
     }
 
@@ -43,11 +39,11 @@ public:
         return gpa;
     }
 
-    inline string get_comment() const{
+    inline std::string get_comment() const{
         return comment;
     }
 
-    inline void set_name(string name) {
+    inline void set_name(std::string name) {
         this->name = name;
     }
 
@@ -63,7 +59,7 @@ public:
         this->gpa = gpa;
     }
 
-    inline void set_comment(string comment) {
+    inline void set_comment(std::string comment) {
         this->comment = comment;
     }
 
@@ -72,12 +68,12 @@ public:
 inline std::ostream& operator<<(std::ostream& output_stream, Student& s) {
     output_stream << "NAME: " << s.get_name() << " AGE: " << s.get_age()
     << " ATTENDANCE: " << s.get_attendance() << " GPA: " << s.get_gpa()
-    << " COMMENT: " << s.get_comment() << endl;
+    << " COMMENT: " << s.get_comment() << std::endl;
 
     return output_stream;
 }
 
-inline std::istream& operator>>(std::istream& input_stream, Student& s) {
+inline std::istream& operator>>(std::istream& input_stream, const Student& s) {
 
     return input_stream;
 }
