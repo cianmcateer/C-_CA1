@@ -1,10 +1,12 @@
 #include "Student.h"
 
 
-Student::Student(string name, int age, int attendance, float gpa ,string comment)
+Student::Student(std::string name, int age, int attendance, float gpa ,std::string comment)
 : name(name) , age(age) , attendance(attendance), gpa(gpa), comment(comment)  {
 
 }
+
+Student::Student(){}
 
 Student::~Student(){}
 
