@@ -8,37 +8,33 @@
 #include <algorithm>
 
 #include "Student.h"
-#include "Student_Store.h"
 
-using std::map;
-using std::vector;
-using std::string;
 
 class Student_Store{
 
 private:
     // Local storage
-    map<string,vector<Student> > school_data;
-    map<string,vector<Student> > read_file();
-    void load(map<string,vector<Student> >& school_data);
+    std::map<std::string,std::vector<Student> > school_data;
+    std::map<std::string,std::vector<Student> > read_file();
+    void load(std::map<std::string,std::vector<Student> >& school_data);
 
 public:
     // Constructor / Destructor
-    Student_Store();
-    ~Student_Store();
+    Student_Store(); // Done
+    ~Student_Store(); // Done
 
-    void add(string& teacher, const Student& s);
-    void clear();
-    void update(string& teacher ,string& name, int& age, int& attendance, int& gpa, string& comment);
-    void remove();
+    void add(std::string& teacher, const Student& s);  // Basic implementation finished
+    void clear(); // Done
+    void update(std::string& teacher ,std::string& name, int& age, int& attendance, int& gpa, std::string& comment);
+    void remove(const std::string& teacher);
 
     void print();
-    void display_group(string& teacher);
-    void create_group(string& teacher);
+    void display_group(std::string& teacher);
+    void create_group(std::string& teacher);
 
     void save();
 
-    bool is_full(string& teacher);
+    bool is_full(std::string& teacher);
 
 
 };
