@@ -22,6 +22,7 @@ private:
     void replace_characters(Student& s, char old_char, char new_char);
     std::string save_path;
 
+
 public:
     // Constructor / Destructor
     Student_Store(); // Done
@@ -32,13 +33,19 @@ public:
     void update(std::string& teacher ,std::string& name, int& age, int& attendance, int& gpa, std::string& comment); // Not implemented
     void remove_group(const std::string& teacher); // Not implemented
 
-    void print(); // Need to sort
+    void print_map(); // Need to sort
+
+    std::vector<Student> get_students();
+    void print(std::vector<Student>& students);
+
     void display_group(std::string& teacher); //
     void create_group(std::string& teacher);
 
     void save(); // Done
 
     bool is_full(std::string& teacher); // Done not implemented yet in main
+
+
 
 
 };
