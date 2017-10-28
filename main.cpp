@@ -26,7 +26,7 @@ int main(void) {
 void init() {
     cout << "Welcome to e-school.com" << endl;
 
-    cout << "Please enter you're name" << endl;
+    /*cout << "Please enter you're name" << endl;
     string user_name;
     cin >> user_name;
 
@@ -49,7 +49,7 @@ void init() {
         cin >> password_attempt;
     }
 
-    cout << "Welcome " << user_name << "..." << endl;
+    cout << "Welcome " << user_name << "..." << endl;*/
     menu();
 
 }
@@ -127,7 +127,7 @@ void menu() {
             }
             case 5: {
 
-                // Clear 'cin of data'
+                // Clear 'cin' of data
                 cin.ignore();
                 string add_teacher;
                 cout << "Add students teacher" << endl;
@@ -164,10 +164,20 @@ void menu() {
                 break;
             }
 
-            case 6:
+            case 6: {
+                cin.ignore();
                 cout << "Create new Group" << endl;
-                break;
+                cout << endl;
 
+                cout << "Please enter teacher name" << endl;
+                string new_teacher;
+                std::getline(cin,new_teacher);
+                st.create_group(new_teacher);
+                cout << new_teacher.substr(0,new_teacher.find(' ')) << " class has been created" << endl;
+
+                break;
+            }
+            
             case 7:
                 break;
 
