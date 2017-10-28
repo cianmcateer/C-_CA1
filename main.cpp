@@ -85,47 +85,53 @@ void menu() {
                 exit(0);
                 break;
             }
-            case 1:{
-                st.print();
+            case 1: {
+                st.print_map();
                 break;
             }
-            case 2:{
-                cout << "Display by grade" << endl;
-                break;
-            }
-            case 3:{
-                cout << "Display class" << endl;
+            case 2: {
+                cout << "Display students" << endl;
+                // Standard sort using the '<' operator
+                std::vector<Student> students = st.get_students();
+                std::sort(students.begin(),students.end());
 
-                string display_teacher;
-                cin >> display_teacher;
-                st.display_group(display_teacher);
+                st.print(students);
+                break;
+            }
+            case 3: {
+                cout << "Display by grade" << endl;
+
+                std::vector<Student> students = st.get_students();
+                std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
+                    return s1.get_gpa() > s2.get_gpa();
+                });
+
+                st.print(students);
                 break;
             }
             case 4:{
-                cout << "Update Student" << endl;
-                /*cout << "Please enter students teacher" << endl;
-                string update_teacher;
-                cin >> update_teacher;
+                std::cout << "Print by name" << endl;
+                std::vector<Student> students = st.get_students();
 
-                cout << "Now enter student name" << endl;
-                cin >> student_name;
+                std::sort(students.begin(),students.end(),[](const Student s1, const Student s2) -> bool {
+                    return s1.get_name() < s2.get_name();
+                });
 
-                cout << "Age" << endl;
-                cin >> age;
-
-                cout << "Attendance" << endl;
-                cin >> attendance;
-
-                cout << "GPA" << endl;
-                cin >> gpa;
-
-                cout << "Comment" << endl;
-                cin >> comment;
-
-                st.update(teacher,student_name,age,attendance,gpa,comment);*/
+                st.print(students);
                 break;
             }
             case 5: {
+                std::cout << "Students from oldest to youngest" << endl;
+                std::vector<Student> students = st.get_students();
+
+                std::sort(students.begin(),students.end(),[](const Student s1, const Student s2) -> bool {
+                    return s1.get_age() > s2.get_age();
+                });
+
+                st.print(students);
+                break;
+            }
+            case 6: {
 
                 // Clear 'cin' of data
                 cin.ignore();
@@ -164,7 +170,7 @@ void menu() {
                 break;
             }
 
-            case 6: {
+            case 7: {
                 cin.ignore();
                 cout << "Create new Group" << endl;
                 cout << endl;
@@ -177,13 +183,28 @@ void menu() {
 
                 break;
             }
-            
-            case 7:
-                break;
 
-            case 8:
+            case 8: {
+
+            }
+
+            case 9: {
+                break;
+            }
+
+            case 10: {
+
+            }
+
+            case 11:
                 st.save();
                 cout << "Data has been saved!" << endl;
+                break;
+
+            case 12:
+                break;
+
+            case 13:
                 break;
 
             default:
