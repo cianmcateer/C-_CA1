@@ -125,13 +125,15 @@ void Student_Store::display_group(std::string& teacher) {
     }
 }
 
-void create_group(std::string& teacher) {
-//    vector<Student> new_group;
-//    school_data.insert(teacher,new_group);
+void Student_Store::create_group(std::string& teacher) {
+    std::vector<Student> new_group;
+    school_data[teacher] = new_group;
 }
 
-void remove_group(const std::string& teacher) {
-
+void Student_Store::remove_group(const std::string& teacher) {
+    std::map<std::string,std::vector<Student> >::iterator iter;
+    iter = school_data.find(teacher);
+    school_data.erase(iter);
 }
 
 void Student_Store::save() {
