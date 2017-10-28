@@ -1,15 +1,16 @@
 #include "Student_Store.h"
 
 Student_Store::Student_Store() {
-    Student_Store::load(school_data);
-//    school_data = read_file();
+//    Student_Store::load(school_data);
+    school_data = Student_Store::read_file();
+    save_path = "data.txt";
 }
 
 Student_Store::~Student_Store() {}
 
 void Student_Store::load(std::map<std::string,std::vector<Student> >& school_data) {
 
-    Student s1("CianMcAteer",21,15,44,"Good");
+    Student s1("Cian McAteer",21,15,44,"Good");
     Student s2("Jp mcdoug",15,77,44,"shite");
     Student s3("sam sung",44,11,33,"grand");
     std::vector<Student> vec1;
@@ -28,6 +29,17 @@ void Student_Store::load(std::map<std::string,std::vector<Student> >& school_dat
     school_data["Barbara Jones"] = vec1;
     school_data["John McDonald"] = vec2;
 
+}
+
+void Student_Store::replace_characters(Student& s, char old_char, char new_char) {
+    std::string new_name = s.get_name();
+    std::string new_comment = s.get_comment();
+
+    replace(new_name.begin(),new_name.end(),old_char,new_char);
+    replace(new_comment.begin(),new_comment.end(),old_char,new_char);
+
+    s.set_name(new_name);
+    s.set_comment(new_comment);
 }
 
 void Student_Store::add(std::string& teacher, const Student& s) {
@@ -63,36 +75,44 @@ void Student_Store::print() {
 
 
 std::map<std::string,std::vector<Student> > Student_Store::read_file() {
-/*    const string file_path = "data.txt";
-    std::ifstream read_file(file_path);
 
-    map<string,vector<Student> > file_data;
+    std::string read_path = "data.txt";
 
-    string teacher;
-    string student_name;
-    int age;
-    float gpa;
-    int attendance;
-    string comment;
+    std::ifstream student_file(read_path);
+    std::vector<Student> students;
 
-    vector<Student> students;
-    Student s;
+    std::map<std::string,std::vector<Student> > map;
+    if(student_file.is_open()) {
 
-    if(!read_file.is_open()) {
-        std::cerr << "Error opening file" << endl;
-    } else {
-        while(!read_file.eof()) {
-            read_file >> teacher;
-            while(read_file >> s.get_name() >> s.get_age() >> s.get_gpa() >> s.get_attendance() >> s.get_comment()) {
-                students.push_back(s);
-            }
-            file_data[teacher] = students;
+        std::vector<std::string> student_lines;
+        std::string student_line;
+        while(getline(student_file,student_line)) {
+            student_lines.push_back(student_line);
         }
-        read_file.close();
-    }
+        for(unsigned int i = 0;i < student_lines.size();++i) {
+            std::stringstream student_stream(student_lines[i]);
 
-    return file_data;*/
+            std::string teacher;
+            Student s;
+
+            while(student_stream >> teacher) {
+                replace(teacher.begin(), teacher.end(), '-', ' ');
+                while(student_stream >> s) {
+                    replace_characters(s,'-',' ');
+                    students.push_back(s);
+                }
+                map[teacher] = students;
+                students.clear();
+            }
+        }
+
+        student_file.close();
+    } else {
+        std::cerr << "error" << std::endl;
+    }
+    return map;
 }
+
 
 void Student_Store::display_group(std::string& teacher) {
     if(school_data[teacher].empty()) {
@@ -110,24 +130,29 @@ void create_group(std::string& teacher) {
 //    school_data.insert(teacher,new_group);
 }
 
-void remove(const std::string& teacher) {
-    school_data.erase(teacher);
+void remove_group(const std::string& teacher) {
+
 }
 
 void Student_Store::save() {
-    const std::string file_path = "data.txt";
-    std::ofstream save_file(file_path);
+
+    std::ofstream save_file(save_path);
+
     if(save_file.is_open()) {
-        for(auto& sd : school_data) {
-            save_file << sd.first << "," << sd.second.size() << std::endl;
-            for(auto& s : sd.second) {
-                save_file << s.get_name() << "," << s.get_age() <<
-                "," << s.get_gpa() << "," << s.get_attendance() <<
-                s.get_comment() << std::endl;
+        for(auto& str : school_data) {
+            std::string teacher = str.first;
+            std::replace(teacher.begin(), teacher.end(), ' ', '-');
+            save_file << teacher << " ";
+            for(auto& s : str.second) {
+                replace_characters(s,' ','-');
+                save_file << s.get_name() << " " << s.get_age() << " " << s.get_attendance()
+                << " " << s.get_gpa() << " " << s.get_comment() << " ";
             }
+            save_file << std::endl;
         }
+        save_file.close();
     } else {
-        std::cerr << "File not open" << std::endl;
+        std::cerr << "Save file could not open" << std::endl;
     }
 
 }
