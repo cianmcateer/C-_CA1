@@ -63,7 +63,7 @@ bool Student_Store::is_full(std::string& teacher) {
     return false;
 }
 
-void Student_Store::print() {
+void Student_Store::print_map() {
     for(auto& sd : school_data) {
         std::cout << sd.first << ":" << std::endl;
         for(auto& s : sd.second) {
@@ -72,7 +72,22 @@ void Student_Store::print() {
     }
 }
 
+std::vector<Student> Student_Store::get_students() {
+    std::vector<Student> students;
+    for(const auto& key : school_data) {
+        for(const auto& s : key.second) {
+            students.push_back(s);
+        }
+    }
+    return students;
+}
 
+void Student_Store::print(std::vector<Student>& students) {
+    std::cout << "Total number of students: " << students.size() << std::endl;
+    for(auto& s : students) {
+        std::cout << s << std::endl;
+    }
+}
 
 std::map<std::string,std::vector<Student> > Student_Store::read_file() {
 
@@ -131,7 +146,9 @@ void Student_Store::create_group(std::string& teacher) {
 }
 
 void Student_Store::remove_group(const std::string& teacher) {
+    // Create iterator of map
     std::map<std::string,std::vector<Student> >::iterator iter;
+    // Find matching key and delete
     iter = school_data.find(teacher);
     school_data.erase(iter);
 }
@@ -143,6 +160,7 @@ void Student_Store::save() {
     if(save_file.is_open()) {
         for(auto& str : school_data) {
             std::string teacher = str.first;
+            // Replace spaces with spaces before sending to file
             std::replace(teacher.begin(), teacher.end(), ' ', '-');
             save_file << teacher << " ";
             for(auto& s : str.second) {
