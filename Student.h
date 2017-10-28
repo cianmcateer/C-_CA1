@@ -7,8 +7,6 @@
 #include <map>
 #include <ostream>
 
-
-
 class Student {
 private:
     std::string name;
@@ -23,23 +21,23 @@ public:
     ~Student();
     bool has_passed();
 
-    inline std::string get_name() const{
+    inline std::string get_name() const {
         return name;
     }
 
-    inline int get_age() const{
+    inline int get_age() const {
         return age;
     }
 
-    inline int get_attendance() const{
+    inline int get_attendance() const {
         return attendance;
     }
 
-    inline float get_gpa() const{
+    inline float get_gpa() const {
         return gpa;
     }
 
-    inline std::string get_comment() const{
+    inline std::string get_comment() const {
         return comment;
     }
 
@@ -73,7 +71,27 @@ inline std::ostream& operator<<(std::ostream& output_stream, Student& s) {
     return output_stream;
 }
 
-inline std::istream& operator>>(std::istream& input_stream, const Student& s) {
+inline std::istream& operator>>(std::istream& input_stream, Student& s) {
+
+    std::string name;
+    input_stream >> name;
+    s.set_name(name);
+
+    int age;
+    input_stream >> age;
+    s.set_age(age);
+
+    int attendance;
+    input_stream >> attendance;
+    s.set_attendance(attendance);
+
+    float gpa;
+    input_stream >> gpa;
+    s.set_gpa(gpa);
+
+    std::string comment;
+    input_stream >> comment;
+    s.set_comment(comment);
 
     return input_stream;
 }
