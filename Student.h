@@ -20,6 +20,7 @@ public:
     Student();
     ~Student();
     bool has_passed();
+    std::string to_html();
 
     inline std::string get_name() const {
         return name;
@@ -94,4 +95,19 @@ inline std::istream& operator>>(std::istream& input_stream, Student& s) {
     s.set_comment(comment);
 
     return input_stream;
+}
+
+inline bool operator<(Student s1,Student s2) {
+
+    if(s1.get_name() < s2.get_name()) return true;
+    if(s2.get_name() < s1.get_name()) return false;
+
+    if(s1.get_age() < s2.get_age()) return true;
+    if(s2.get_age() < s1.get_age()) return false;
+
+    if(s1.get_gpa() < s2.get_gpa()) return true;
+    if(s2.get_gpa() < s1.get_gpa()) return false;
+
+    return false;
+
 }
