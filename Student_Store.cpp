@@ -197,5 +197,30 @@ void Student_Store::create_webpage() {
     // Close off page and end connection
     html_page << "</body></html>";
     html_page.close();
+}
+
+void Student_Store::top_ten() {
+
+    // Use to sort priority queue
+    struct by_gpa {
+        bool operator()(const Student& s1, const Student& s2) {
+            return s1.get_gpa() < s2.get_gpa();
+        }
+    };
+
+    std::priority_queue<Student,std::vector<Student>, by_gpa> pq; // Create priority queue sorted by gpa
+    for(auto& key : school_data) {
+        for(auto& s : key.second) {
+            pq.push(s); // Fill students
+        }
+    }
+
+    const int top_students = 10;
+    // Print Ten highest scoring students
+    for(int i = 0;i < top_students;++i) {
+        // Print highest priority object
+        std::cout << "Name: " << pq.top().get_name() << " GPA: " << pq.top().get_gpa() << std::endl;
+        pq.pop(); // Take off highest priority so we can print the next highest priority student
+    }
 
 }
