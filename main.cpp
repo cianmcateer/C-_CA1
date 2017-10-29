@@ -185,7 +185,7 @@ void menu() {
             }
 
             case 8: {
-
+                break;
             }
 
             case 9: {
@@ -193,18 +193,14 @@ void menu() {
             }
 
             case 10: {
-
+                st.create_webpage();
+                cout << "Your webpage has been created" << endl;
+                break;
             }
 
             case 11:
                 st.save();
                 cout << "Data has been saved!" << endl;
-                break;
-
-            case 12:
-                break;
-
-            case 13:
                 break;
 
             default:
