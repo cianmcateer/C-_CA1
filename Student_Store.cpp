@@ -176,3 +176,26 @@ void Student_Store::save() {
     }
 
 }
+
+void Student_Store::create_webpage() {
+    std::ofstream html_page("e-school.html");
+    // HTML header tags
+    html_page << "<!DOCTYPE html><html><head>"; // Header tags
+    html_page << "<link href=\"school_page.css\" rel=\"stylesheet\">"; // Style sheet link
+    html_page << "</head><body>";
+    html_page << "<h1>E-School.ie</h1>";
+    html_page << "<table border='1'>";
+    html_page << "<tr><td>Teacher</td><td>Student name</td><td>Age</td><td>Attendance</td><td>GPA</td><td>Comment</td></tr>";
+    for(auto& key : school_data) {
+        for(auto& s : key.second) {
+            html_page << "<tr>";
+            html_page << "<td>" << key.first << "</td>" << s.to_html();
+            html_page << "</tr>";
+        }
+    }
+    html_page << "</table>";
+    // Close off page and end connection
+    html_page << "</body></html>";
+    html_page.close();
+
+}
