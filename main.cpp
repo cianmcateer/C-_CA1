@@ -185,10 +185,13 @@ void menu() {
             }
 
             case 8: {
+                cout << "Top ten students" << endl;
+                st.top_ten();
                 break;
             }
 
             case 9: {
+
                 break;
             }
 
