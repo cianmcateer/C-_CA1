@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <algorithm>
 #include <vector>
 #include <map>
@@ -97,7 +98,7 @@ inline std::istream& operator>>(std::istream& input_stream, Student& s) {
     return input_stream;
 }
 
-inline bool operator<(Student s1,Student s2) {
+inline bool operator<(const Student s1, const Student s2) {
 
     if(s1.get_name() < s2.get_name()) return true;
     if(s2.get_name() < s1.get_name()) return false;
