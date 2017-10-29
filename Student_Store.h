@@ -18,8 +18,7 @@ class Student_Store {
 private:
     // Local storage
     std::map<std::string,std::vector<Student> > school_data;
-    std::map<std::string,std::vector<Student> > read_file();
-    std::priority_queue<Student> get_queue();
+    std::map<std::string,std::vector<Student> > read_file();        
     void load(std::map<std::string,std::vector<Student> >& school_data);
     void replace_characters(Student& s, char old_char, char new_char);
     std::string save_path;
@@ -48,7 +47,6 @@ public:
 
     bool is_full(std::string& teacher); // Done not implemented yet in main
 
-
-
+    void top_ten();
 
 };
