@@ -19,3 +19,16 @@ Student::~Student(){}
 bool Student::has_passed()  {
     return gpa >= 40;
 }
+
+std::string Student::to_html() {
+
+    std::ostringstream oss;
+
+    oss << "<td>" << this->name << "</td>"
+    << "<td>" << this->age << "</td>"
+    << "<td>" << this->attendance << "</td>"
+    << "<td>" << this->gpa << "</td>"
+    << "<td>" << this->comment << "</td>";
+
+    return oss.str();
+}
