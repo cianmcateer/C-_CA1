@@ -76,8 +76,13 @@ void menu() {
     Student_Store st;
 
     while(true) {
+
         read_help_file(); // Help menu
-        cin >> choice;
+        while(!(cin >> choice)) { // Input validation only accepts integers
+            cout << "Sorry please enter a number" << endl;
+            cin.clear();
+            cin.ignore(100,'\n'); // Stops message from printing more than once
+        }
 
         switch(choice) {
             case 0: {
@@ -133,39 +138,45 @@ void menu() {
             }
             case 6: {
 
-                // Clear 'cin' of data
-                cin.ignore();
-                string add_teacher;
-                cout << "Add students teacher" << endl;
-                std::getline(cin,add_teacher); // Allow to read white spaces
+                char repeat = 'Y';
+                while(repeat == 'Y' || repeat == 'y') {
+                    // Clear 'cin' of data
+                    cin.ignore();
+                    string add_teacher;
+                    cout << "Add students teacher" << endl;
+                    std::getline(cin,add_teacher); // Allow to read white spaces
 
-                cout << "Student name" << endl;
-                string add_student_name;
-                std::getline(cin,add_student_name);
+                    cout << "Student name" << endl;
+                    string add_student_name;
+                    std::getline(cin,add_student_name);
 
-                cout << "Age" << endl;
-                int add_age;
-                cin >> add_age;
+                    cout << "Age" << endl;
+                    int add_age;
+                    cin >> add_age;
 
-                cout << "Attendance" << endl;
-                int add_attendance;
-                cin >> add_attendance;
+                    cout << "Attendance" << endl;
+                    int add_attendance;
+                    cin >> add_attendance;
 
-                cout << "GPA" << endl;
-                float add_gpa;
-                cin >> add_gpa;
+                    cout << "GPA" << endl;
+                    float add_gpa;
+                    cin >> add_gpa;
 
-                cout << "Comment" << endl;
-                string add_comment;
-                cin.ignore();
-                std::getline(cin,add_comment);
+                    cout << "Comment" << endl;
+                    string add_comment;
+                    cin.ignore();
+                    std::getline(cin,add_comment);
 
-                const Student new_student(add_student_name,add_age,add_attendance,add_gpa,add_comment);
+                    const Student new_student(add_student_name,add_age,add_attendance,add_gpa,add_comment);
 
-                st.add(add_teacher,new_student);
+                    st.add(add_teacher,new_student);
 
-                // print students first name only
-                cout << add_student_name.substr(0,add_student_name.find(' ')) << " has been added!" << endl;
+                    // print students first name only
+                    cout << add_student_name.substr(0,add_student_name.find(' ')) << " has been added!" << endl;
+
+                    cout << "Would you like to add another student? (Y/y: yes : N/n no)" << endl;
+                    cin >> repeat;
+                }
 
                 break;
             }
@@ -191,7 +202,9 @@ void menu() {
             }
 
             case 9: {
-
+                cout << "Display failing students" << endl;
+                std::vector<Student> students = st.get_students();
+                st.has_failed(students);
                 break;
             }
 
