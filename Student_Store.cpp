@@ -1,14 +1,15 @@
 #include "Student_Store.h"
 
 Student_Store::Student_Store() {
-//    Student_Store::load(school_data);
     school_data = Student_Store::read_file();
     save_path = "data.txt";
 }
 
 Student_Store::~Student_Store() {}
 
-void Student_Store::load(std::map<std::string,std::vector<Student> >& school_data) {
+std::map<std::string,std::vector<Student> > Student_Store::load() {
+
+    std::map<std::string,std::vector<Student> > map;
 
     Student s1("Cian McAteer",21,15,44,"Good");
     Student s2("Jp mcdoug",15,77,44,"shite");
@@ -26,8 +27,10 @@ void Student_Store::load(std::map<std::string,std::vector<Student> >& school_dat
     vec2.push_back(s5);
     vec2.push_back(s6);
 
-    school_data["Barbara Jones"] = vec1;
-    school_data["John McDonald"] = vec2;
+    map["Barbara Jones"] = vec1;
+    map["John McDonald"] = vec2;
+
+    return map;
 
 }
 
@@ -64,6 +67,7 @@ bool Student_Store::is_full(std::string& teacher) {
 }
 
 void Student_Store::print_map() {
+    std::cout << "Number of teachers: " << school_data.size() << "." << std::endl;
     for(auto& sd : school_data) {
         std::cout << sd.first << ":" << std::endl;
         for(auto& s : sd.second) {
@@ -123,7 +127,8 @@ std::map<std::string,std::vector<Student> > Student_Store::read_file() {
 
         student_file.close();
     } else {
-        std::cerr << "error" << std::endl;
+        map = load();
+        std::cerr << "Error: Could access file, Backup data has been implemented." << std::endl;
     }
     return map;
 }
@@ -208,9 +213,9 @@ void Student_Store::top_ten() {
         }
     };
 
-    std::priority_queue<Student,std::vector<Student>, by_gpa> pq; // Create priority queue sorted by gpa
+    std::priority_queue<Student,std::vector<Student>, by_gpa> pq; // Initialise priority queue sorted by gpa
     for(auto& key : school_data) {
-        for(auto& s : key.second) {
+        for(const auto& s : key.second) {
             pq.push(s); // Fill students
         }
     }
@@ -223,4 +228,12 @@ void Student_Store::top_ten() {
         pq.pop(); // Take off highest priority so we can print the next highest priority student
     }
 
+}
+
+void Student_Store::has_failed(std::vector<Student>& students) {
+    for(auto& s : students) {
+        if(!s.has_passed()) {
+            std::cout << "Name: " << s.get_name() << " Result: " << s.get_gpa() << std::endl;
+        }
+    }
 }
