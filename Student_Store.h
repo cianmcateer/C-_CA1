@@ -18,8 +18,8 @@ class Student_Store {
 private:
     // Local storage
     std::map<std::string,std::vector<Student> > school_data;
-    std::map<std::string,std::vector<Student> > read_file();        
-    void load(std::map<std::string,std::vector<Student> >& school_data);
+    std::map<std::string,std::vector<Student> > read_file();
+    std::map<std::string,std::vector<Student> > load();
     void replace_characters(Student& s, char old_char, char new_char);
     std::string save_path;
 
@@ -33,20 +33,15 @@ public:
     void clear(); // Done
     void update(std::string& teacher ,std::string& name, int& age, int& attendance, int& gpa, std::string& comment); // Not implemented
     void remove_group(const std::string& teacher); // Not implemented
-
     void print_map(); // Need to sort
-
     std::vector<Student> get_students();
     void print(std::vector<Student>& students);
-
     void display_group(std::string& teacher); //
     void create_group(std::string& teacher);
-
     void save(); // Done
     void create_webpage();
-
     bool is_full(std::string& teacher); // Done not implemented yet in main
-
     void top_ten();
+    void has_failed(std::vector<Student>& students);
 
 };
