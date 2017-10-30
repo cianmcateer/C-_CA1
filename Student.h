@@ -15,12 +15,12 @@ private:
     int attendance;
     float gpa;
     std::string comment;
+    bool passed;
 
 public:
     Student(std::string name, int age, int attendance, float gpa, std::string comment);
     Student();
     ~Student();
-    bool has_passed();
     std::string to_html();
 
     inline std::string get_name() const {
@@ -43,6 +43,10 @@ public:
         return comment;
     }
 
+    inline bool has_passed() const {
+        return passed;
+    }
+
     inline void set_name(std::string name) {
         this->name = name;
     }
@@ -63,9 +67,10 @@ public:
         this->comment = comment;
     }
 
+
 };
 
-inline std::ostream& operator<<(std::ostream& output_stream, Student& s) {
+inline std::ostream& operator<<(std::ostream& output_stream, const Student& s) {
     output_stream << "NAME: " << s.get_name() << " AGE: " << s.get_age()
     << " ATTENDANCE: " << s.get_attendance() << " GPA: " << s.get_gpa()
     << " COMMENT: " << s.get_comment() << std::endl;
