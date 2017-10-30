@@ -118,7 +118,7 @@ void menu() {
                 std::cout << "Print by name" << endl;
                 std::vector<Student> students = st.get_students();
 
-                std::sort(students.begin(),students.end(),[](const Student s1, const Student s2) -> bool {
+                std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
                     return s1.get_name() < s2.get_name();
                 });
 
@@ -129,7 +129,7 @@ void menu() {
                 std::cout << "Students from oldest to youngest" << endl;
                 std::vector<Student> students = st.get_students();
 
-                std::sort(students.begin(),students.end(),[](const Student s1, const Student s2) -> bool {
+                std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
                     return s1.get_age() > s2.get_age();
                 });
 
