@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iterator>
 
 #include "Student.h"
 #include "Student_Store.h"
@@ -65,7 +66,7 @@ void read_help_file() {
             cout << line << endl;
         }
     } else {
-        std::cerr << "Error opening file" << endl;
+        std::cerr << "Error opening menu file" << endl;
     }
 
 }
@@ -219,6 +220,104 @@ void menu() {
                 cout << "Data has been saved!" << endl;
                 break;
 
+            case 12: {
+
+                st.clear();
+                cout << "All data has been cleared" << endl;
+                break;
+
+            }
+
+            case 13: {
+                cin.ignore();
+                cout << "Update student" << endl;
+
+                cout << "Enter student index" << endl;
+                st.print_index();
+
+                int student_at;
+                cin >> student_at;
+
+
+                int choice;
+                cin >> choice;
+
+                switch (choice) {
+                    case 1:
+                        cout << "Change name" << endl;
+                        break;
+
+                    case 2:
+                        cout << "Change age" << endl;
+                        break;
+
+                    case 3:
+                        cout << "Change age" << endl;
+                        break;
+
+                    case 4:
+                        cout << "Change GPA" << endl;
+                        break;
+
+                    case 5:
+                        cout << "Change comment" << endl;
+                        break;
+
+                    default:
+                        cout << "Invalid input" << endl;
+                        break;
+                }
+                break;
+
+            }
+
+            case 14: {
+                cout << "Search by age" << endl;
+                int age;
+                cout << "Enter age" << endl;
+                cin >> age;
+                std::vector<Student> students = st.get_students();
+                int count = 0;
+                for(const auto& s : students) {
+                    if(s.get_age() == age) {
+                        cout << s << endl;
+                        ++count;
+                    }
+                }
+                if(count == 0) {
+                    cout << "No results" << endl;
+                } else if(count == 1) {
+                    cout << "1 result found" << endl;
+                } else {
+                    cout << count << " results found" << endl;
+                }
+                break;
+            }
+
+            case 15: {
+
+                cout << "Search by name" << endl;
+                string name;
+                cout << "Enter name" << endl;
+                cin.ignore();
+                std::getline(cin, name);
+                std::vector<Student> students = st.get_students();
+                int count = 0;
+                for(const auto& s : students) {
+                    if(s.get_name().find(name) != string::npos) {
+                        cout << s << endl;
+                        ++count;
+                    }
+                }
+                if(count == 0) {
+                    cout << "No results" << endl;
+                } else if(count == 1) {
+                    cout << "1 result found" << endl;
+                } else {
+                    cout << count << " results found" << endl;
+                }
+                break;
+            }
             default:
                 cout << "Invalid input please try again." << endl;
         }
