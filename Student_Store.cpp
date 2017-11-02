@@ -53,11 +53,37 @@ void Student_Store::clear() {
     school_data.clear();
 }
 
-void Student_Store::update(std::string& teacher, std::string& name, int& age, int& attendance, int& gpa, std::string& comment) {
+void Student_Store::print_index(std::string& teacher) {
 
+    for(unsigned int i = 0;i < school_data[teacher].size();++i) {
+        std::cout << "INDEX: " << i << " " << school_data[teacher].at(i) << std::endl;
+    }
 }
 
+void Student_Store::update(std::string& teacher,int index,std::string name, int age, int attendance, float gpa, std::string comment) {
 
+
+    if(name != "") {
+        school_data[teacher].at(index).set_name(name);
+    }
+
+    if(age != -1) {
+        school_data[teacher].at(index).set_age(age);
+    }
+
+    if(attendance != -1) {
+        school_data[teacher].at(index).set_attendance(attendance);
+    }
+
+    if(gpa != -1) {
+        school_data[teacher].at(index).set_gpa(gpa);
+    }
+
+    if(comment != "") {
+        school_data[teacher].at(index).set_comment(comment);
+    }
+
+}
 
 bool Student_Store::is_full(std::string& teacher) {
     if(school_data[teacher].size() > 30) {
@@ -170,8 +196,10 @@ void Student_Store::save() {
             save_file << teacher << " ";
             for(auto& s : str.second) {
                 replace_characters(s,' ','-');
-                save_file << s.get_name() << " " << s.get_age() << " " << s.get_attendance()
-                << " " << s.get_gpa() << " " << s.get_comment() << " ";
+
+                save_file << s.get_name() << " " << s.get_age() << " "
+                << s.get_attendance() << " " << s.get_gpa()
+                << " " << s.get_comment() << " ";
             }
             save_file << std::endl;
         }
@@ -220,8 +248,11 @@ void Student_Store::top_ten() {
         }
     }
 
-    const int top_students = 10;
+    int top_students = 10;
     // Print Ten highest scoring students
+    if(pq.size() < top_students) {
+        top_students = pq.size();
+    }
     for(int i = 0;i < top_students;++i) {
         // Print highest priority object
         std::cout << "Name: " << pq.top().get_name() << " GPA: " << pq.top().get_gpa() << std::endl;
@@ -231,9 +262,78 @@ void Student_Store::top_ten() {
 }
 
 void Student_Store::has_failed(std::vector<Student>& students) {
+    const unsigned int pass = 40;
     for(auto& s : students) {
-        if(!s.has_passed()) {
+        if(s.get_gpa() < pass) {
             std::cout << "Name: " << s.get_name() << " Result: " << s.get_gpa() << std::endl;
         }
     }
+}
+
+void Student_Store::get_count(int& i) {
+    if(i == 0) {
+        std::cout << "No results" << std::endl;
+    } else if(i == 1) {
+        std::cout << "1 result found" << std::endl;
+    } else {
+        std::cout << i << " results found" << std::endl;
+    }
+}
+
+void Student_Store::search_age(int& age) {
+
+    int count = 0;
+
+    for(auto& key : school_data) {
+        for(const auto& s : key.second) {
+            if(s.get_age() == age) {
+                std::cout << s << std::endl;
+                ++count;
+            }
+        }
+    }
+    get_count(count);
+}
+
+void Student_Store::search_text(std::string& text, int choice) {
+    int count = 0;
+
+    if(choice == 0) {
+        int count = 0;
+        for(auto& key : school_data) {
+            for(const auto& s : key.second) {
+                if(s.get_name().find(text) != std::string::npos) {
+                    std::cout << s << std::endl;
+                    ++count;
+                }
+            }
+        }
+        get_count(count);
+
+    } else {
+        for(auto& key : school_data) {
+            for(const auto& s : key.second) {
+                if(s.get_comment().find(text) != std::string::npos) {
+                    std::cout << s << std::endl;
+                    ++count;
+                }
+            }
+        }
+        get_count(count);
+    }
+
+}
+
+void Student_Store::search_gpa(float& higher_than) {
+
+    int count = 0;
+    for(auto& key : school_data) {
+        for(const auto& s : key.second) {
+            if(s.get_gpa() > higher_than) {
+                std::cout << s << std::endl;
+                ++count;
+            }
+        }
+    }
+    get_count(count);
 }
