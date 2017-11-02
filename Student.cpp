@@ -1,18 +1,9 @@
 #include "Student.h"
 
 Student::Student(std::string name, int age, int attendance, float gpa ,std::string comment)
-: name(name) , age(age) , attendance(attendance), gpa(gpa), comment(comment)  {
-    this->passed = this->gpa >= 40;
-}
+: name(name) ,age(age) , attendance(attendance), gpa(gpa), comment(comment)  {}
 
-Student::Student(){
-    this->name = "Default name";
-    this->age = 0;
-    this->attendance = 0;
-    this->gpa = 0;
-    this->passed = false;
-    this->comment = "Default comment";
-}
+Student::Student() : name("Default name") ,age(0) , attendance(0), gpa(0), comment("Default comment")  {}
 
 Student::~Student(){}
 
