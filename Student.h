@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <ostream>
+#include <typeinfo>
 
 class Student {
 private:
@@ -71,9 +72,9 @@ public:
 };
 
 inline std::ostream& operator<<(std::ostream& output_stream, const Student& s) {
-    output_stream << "NAME: " << s.get_name() << " AGE: " << s.get_age()
-    << " ATTENDANCE: " << s.get_attendance() << " GPA: " << s.get_gpa()
-    << " COMMENT: " << s.get_comment() << std::endl;
+    output_stream << "NAME: " << s.get_name() << " AGE: " <<
+    s.get_age() << " ATTENDANCE: " <<
+    s.get_attendance() << " GPA: " << s.get_gpa() << " COMMENT: " << s.get_comment() << std::endl;
 
     return output_stream;
 }
@@ -116,4 +117,15 @@ inline bool operator<(const Student s1, const Student s2) {
 
     return false;
 
+}
+
+inline bool operator==(const Student& s1, const Student& s2) {
+    if(s1.get_name() == s2.get_name() && s1.get_age() == s2.get_age()) {
+        return true;
+    }
+    return false;
+}
+
+inline bool operator!=(const Student& s1, const Student& s2) {
+    return !(s1 == s2);
 }
