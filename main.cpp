@@ -82,7 +82,7 @@ void menu() {
         while(!(cin >> choice)) { // Input validation only accepts integers
             cout << "Sorry please enter a number" << endl;
             cin.clear();
-            cin.ignore(100,'\n'); // Stops message from printing more than once
+            cin.ignore(100,'\n'); // Stops message from printing more than once if user enters more than one character
         }
 
         switch(choice) {
@@ -97,7 +97,7 @@ void menu() {
             }
             case 2: {
                 cout << "Display students" << endl;
-                // Standard sort using the '<' operator
+                // Default sort using the '<' operator
                 std::vector<Student> students = st.get_students();
                 std::sort(students.begin(),students.end());
 
@@ -108,6 +108,7 @@ void menu() {
                 cout << "Display by grade" << endl;
 
                 std::vector<Student> students = st.get_students();
+                // Third argument allows us to custom sort our vector
                 std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
                     return s1.get_gpa() > s2.get_gpa();
                 });
@@ -116,7 +117,7 @@ void menu() {
                 break;
             }
             case 4:{
-                std::cout << "Print by name" << endl;
+                std::cout << "Display by name" << endl;
                 std::vector<Student> students = st.get_students();
 
                 std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
@@ -137,7 +138,60 @@ void menu() {
                 st.print(students);
                 break;
             }
+
             case 6: {
+                cout << "Top students" << endl;
+                st.top_ten();
+                break;
+            }
+
+            case 7: {
+                cout << "Display failing students" << endl;
+                std::vector<Student> students = st.get_students();
+                st.has_failed(students);
+                break;
+            }
+
+            case 8: {
+                cout << "Search by age" << endl;
+                int age;
+                cout << "Enter age" << endl;
+                cin >> age;
+                st.search_age(age);
+                break;
+            }
+
+            case 9: {
+
+                cout << "Search by name" << endl;
+                string search;
+                cout << "Enter search" << endl;
+                cin.ignore();
+                std::getline(cin, search);
+                st.search_text(search, 0);
+                break;
+            }
+
+            case 10: {
+                cout << "Search by comment" << endl;
+                string search;
+                cout << "Enter search" << endl;
+                cin.ignore();
+                std::getline(cin, search);
+                st.search_text(search, 1);
+                break;
+            }
+
+            case 11: {
+                cout << "Search by grade" << endl;
+                cout << "Enter grade" << endl;
+                float grade;
+                cin >> grade;
+                st.search_gpa(grade);
+                break;
+            }
+
+            case 12: {
 
                 char repeat = 'Y';
                 while(repeat == 'Y' || repeat == 'y') {
@@ -182,7 +236,49 @@ void menu() {
                 break;
             }
 
-            case 7: {
+            case 13: {
+                cin.ignore();
+                cout << "Update student" << endl;
+                cout << "Enter teacher name" << endl;
+                string teacher;
+                std::getline(cin, teacher);
+
+                cout << "Enter student index" << endl;
+                st.print_index(teacher);
+
+                int student_at;
+                cin >> student_at;
+
+                cin.ignore();
+
+                cout << "Enter new student name (leave empty to stay same)" << endl;
+                string name;
+                std::getline(cin, name);
+
+                cout << "Change student age (enter -1 to leave the same)" << endl;
+                int age;
+                cin >> age;
+
+                cout << "Change student attendance (enter -1 to leave the same)" << endl;
+                int attendance;
+                cin >> attendance;
+
+                cout << "Change student gpa (enter -1 to leave the same)" << endl;
+                float gpa;
+                cin >> gpa;
+
+                cin.ignore();
+                cout << "Change comment (leave empty to stay same)" << endl;
+                std::string comment;
+                std::getline(cin, comment);
+
+                st.update(teacher, student_at,name,age,attendance,gpa,comment);
+
+                break;
+
+            }
+
+            case 14: {
                 cin.ignore();
                 cout << "Create new Group" << endl;
                 cout << endl;
@@ -196,31 +292,18 @@ void menu() {
                 break;
             }
 
-            case 8: {
-                cout << "Top ten students" << endl;
-                st.top_ten();
-                break;
-            }
-
-            case 9: {
-                cout << "Display failing students" << endl;
-                std::vector<Student> students = st.get_students();
-                st.has_failed(students);
-                break;
-            }
-
-            case 10: {
+            case 15: {
                 st.create_webpage();
                 cout << "Your webpage has been created" << endl;
                 break;
             }
 
-            case 11:
+            case 16:
                 st.save();
                 cout << "Data has been saved!" << endl;
                 break;
 
-            case 12: {
+            case 17: {
 
                 st.clear();
                 cout << "All data has been cleared" << endl;
@@ -228,96 +311,13 @@ void menu() {
 
             }
 
-            case 13: {
-                cin.ignore();
-                cout << "Update student" << endl;
-
-                cout << "Enter student index" << endl;
-                st.print_index();
-
-                int student_at;
-                cin >> student_at;
-
-
-                int choice;
-                cin >> choice;
-
-                switch (choice) {
-                    case 1:
-                        cout << "Change name" << endl;
-                        break;
-
-                    case 2:
-                        cout << "Change age" << endl;
-                        break;
-
-                    case 3:
-                        cout << "Change age" << endl;
-                        break;
-
-                    case 4:
-                        cout << "Change GPA" << endl;
-                        break;
-
-                    case 5:
-                        cout << "Change comment" << endl;
-                        break;
-
-                    default:
-                        cout << "Invalid input" << endl;
-                        break;
-                }
-                break;
-
+            case 18: {
+                st.save();
+                cout << "Your data has been saved" << endl;
+                cout << "Goodbye!" << endl;
+                exit(0);
             }
 
-            case 14: {
-                cout << "Search by age" << endl;
-                int age;
-                cout << "Enter age" << endl;
-                cin >> age;
-                std::vector<Student> students = st.get_students();
-                int count = 0;
-                for(const auto& s : students) {
-                    if(s.get_age() == age) {
-                        cout << s << endl;
-                        ++count;
-                    }
-                }
-                if(count == 0) {
-                    cout << "No results" << endl;
-                } else if(count == 1) {
-                    cout << "1 result found" << endl;
-                } else {
-                    cout << count << " results found" << endl;
-                }
-                break;
-            }
-
-            case 15: {
-
-                cout << "Search by name" << endl;
-                string name;
-                cout << "Enter name" << endl;
-                cin.ignore();
-                std::getline(cin, name);
-                std::vector<Student> students = st.get_students();
-                int count = 0;
-                for(const auto& s : students) {
-                    if(s.get_name().find(name) != string::npos) {
-                        cout << s << endl;
-                        ++count;
-                    }
-                }
-                if(count == 0) {
-                    cout << "No results" << endl;
-                } else if(count == 1) {
-                    cout << "1 result found" << endl;
-                } else {
-                    cout << count << " results found" << endl;
-                }
-                break;
-            }
             default:
                 cout << "Invalid input please try again." << endl;
         }
