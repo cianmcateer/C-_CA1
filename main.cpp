@@ -5,6 +5,7 @@
 
 #include "Student.h"
 #include "Student_Store.h"
+#include "util.h"
 
 using std::string;
 using std::cout;
@@ -19,7 +20,6 @@ bool login();
 bool is_password(string password);
 
 int main(void) {
-
     init();
     return 0;
 }
@@ -77,7 +77,6 @@ void menu() {
     Student_Store st;
 
     while(true) {
-
         read_help_file(); // Help menu
         while(!(cin >> choice)) { // Input validation only accepts integers
             cout << "Sorry please enter a number" << endl;
@@ -184,9 +183,28 @@ void menu() {
 
             case 11: {
                 cout << "Search by grade" << endl;
-                cout << "Enter grade" << endl;
                 float grade;
-                cin >> grade;
+                do {
+                    cout << "Enter grade" << endl;
+                    cin >> grade;
+
+                    if(cin.fail()) {
+                        cout << "Please enter a number (No characters)" << endl;
+                        cin.clear();
+                        cin.ignore(256, '\n'); // Clear and ignore last line to prevent statement to be consta
+                    }
+                    else if(grade > 100) {
+                        cout << "Grades can only be marked to 100" << endl;
+                    }
+                    else if(!is_pos(grade)){
+                        cout << "Enter a positive value" << endl;
+                    } else {
+                        cout << "Students with a grade greater or equal to " << grade << endl;
+                        break; // Exit loop
+                    }
+
+                } while(!is_pos(grade) || grade > 100 || !cin.fail());
+
                 st.search_gpa(grade);
                 break;
             }
@@ -231,9 +249,8 @@ void menu() {
 
                     cout << "Would you like to add another student? (Y/y: yes : N/n no)" << endl;
                     cin >> repeat;
+                    break;
                 }
-
-                break;
             }
 
             case 13: {
@@ -320,6 +337,7 @@ void menu() {
 
             default:
                 cout << "Invalid input please try again." << endl;
+                break;
         }
     }
 }
