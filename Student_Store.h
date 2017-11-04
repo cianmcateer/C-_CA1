@@ -19,7 +19,7 @@ private:
     // Local storage
     std::map<std::string,std::vector<Student> > school_data;
     std::map<std::string,std::vector<Student> > read_file();
-    std::map<std::string,std::vector<Student> > load();
+    std::map<std::string,std::vector<Student> > back_up_data();
     void replace_characters(Student& s, char old_char, char new_char);
     std::string save_path;
     void get_count(int& i);
