@@ -171,9 +171,35 @@ void Student_Store::display_group(std::string& teacher) {
     }
 }
 
+bool Student_Store::teacher_exists(std::string& teacher) {
+    std::string lower_teacher = lower_case(teacher);
+    for(auto& key : school_data) {
+        std::string lower_key = lower_case(key.first);
+        if(lower_key == lower_teacher) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+std::string Student_Store::lower_case(std::string word) {
+    for(char& c : word) {
+        c = tolower(c);
+    }
+    return word;
+}
+
 void Student_Store::create_group(std::string& teacher) {
-    std::vector<Student> new_group;
-    school_data[teacher] = new_group;
+
+    if(teacher_exists(teacher)) {
+        std::cout << teacher << " has already been added." << std::endl;
+    } else {
+        std::vector<Student> new_group;
+        school_data[teacher] = new_group;
+        std::cout << teacher.substr(0,teacher.find(' ')) << " class has been created" << std::endl;
+    }
+
 }
 
 void Student_Store::remove_group(const std::string& teacher) {
