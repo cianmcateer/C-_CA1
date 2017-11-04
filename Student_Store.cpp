@@ -7,7 +7,7 @@ Student_Store::Student_Store() {
 
 Student_Store::~Student_Store() {}
 
-std::map<std::string,std::vector<Student> > Student_Store::load() {
+std::map<std::string,std::vector<Student> > Student_Store::back_up_data() {
 
     std::map<std::string,std::vector<Student> > map;
 
@@ -153,7 +153,7 @@ std::map<std::string,std::vector<Student> > Student_Store::read_file() {
 
         student_file.close();
     } else {
-        map = load();
+        map = back_up_data();
         std::cerr << "Error: Could access file, Backup data has been implemented." << std::endl;
     }
     return map;
@@ -329,7 +329,7 @@ void Student_Store::search_gpa(float& higher_than) {
     int count = 0;
     for(auto& key : school_data) {
         for(const auto& s : key.second) {
-            if(s.get_gpa() > higher_than) {
+            if(s.get_gpa() >= higher_than) {
                 std::cout << s << std::endl;
                 ++count;
             }
