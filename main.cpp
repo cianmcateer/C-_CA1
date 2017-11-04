@@ -348,14 +348,21 @@ void menu() {
             case 14: {
                 cin.ignore();
                 cout << "Create new Group" << endl;
-                cout << endl;
-
                 cout << "Please enter teacher name" << endl;
                 string new_teacher;
                 std::getline(cin,new_teacher);
-                st.create_group(new_teacher);
-                cout << new_teacher.substr(0,new_teacher.find(' ')) << " class has been created" << endl;
 
+                const string regex = "[^\d\W]+";
+                while(!is_correct(new_teacher, regex)) {
+                    cout << "Please try again" << endl;
+                    cin.clear();
+                    std::getline(cin, new_teacher);
+
+                    if(is_correct(new_teacher, regex)) {
+                        break;
+                    }
+                }
+                st.create_group(new_teacher);
                 break;
             }
 
@@ -370,6 +377,7 @@ void menu() {
                 cout << "Data has been saved!" << endl;
                 break;
             }
+
             case 17: {
 
                 st.clear();
