@@ -190,7 +190,10 @@ void menu() {
                 cin.ignore();
                 std::getline(cin, search);
 
-                while(!is_correct(search,"^[a-zA-Z]*$)")) {
+                // No special character, digits or spaces
+                const string regex = "^[a-zA-Z]*$)";
+
+                while(!is_correct(search, regex)) {
                     cout << "Input mismatch please enter again" << endl;
                     cin.clear();
                     std::getline(cin, search);
