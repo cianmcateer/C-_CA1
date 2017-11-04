@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iterator>
 
+
 #include "Student.h"
 #include "Student_Store.h"
 #include "util.h"
@@ -154,8 +155,29 @@ void menu() {
             case 8: {
                 cout << "Search by age" << endl;
                 int age;
-                cout << "Enter age" << endl;
-                cin >> age;
+
+                do {
+                    cout << "Enter age" << endl;
+                    cin >> age;
+
+                    if(cin.fail()) {
+                        cout << "Please enter a number (No characters)" << endl;
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                    } else if(age > 18) {
+                        cout << "Students can't be older than 18" << endl;
+                    } else if(age < 12) {
+                        if(!is_pos(age)) {
+                            cout << "Input must be a positive value" << endl;
+                        } else {
+                            cout << "Student is too young to attend this school" << endl;
+                        }
+                    } else {
+                        cout << "Students aged " << age << endl;
+                        break;
+                    }
+                } while(!cin.fail() || age > 18 || age < 12);
+
                 st.search_age(age);
                 break;
             }
@@ -315,11 +337,11 @@ void menu() {
                 break;
             }
 
-            case 16:
+            case 16: {
                 st.save();
                 cout << "Data has been saved!" << endl;
                 break;
-
+            }
             case 17: {
 
                 st.clear();
