@@ -9,6 +9,7 @@
 #include <sstream>
 #include <cstring>
 #include <queue>
+#include <cctype>
 
 #include "Student.h"
 
@@ -23,6 +24,8 @@ private:
     void replace_characters(Student& s, char old_char, char new_char);
     std::string save_path;
     void get_count(int& i);
+    bool teacher_exists(std::string& teacher);
+    std::string lower_case(std::string word);
 
 
 public:
@@ -38,8 +41,8 @@ public:
     void update(std::string& teacher,int index,std::string name, int age, int attendance, float gpa, std::string comment);
 
     void remove_group(const std::string& teacher); // Not implemented
-    void print_map(); // Need to sort
-    std::vector<Student> get_students();
+    void print_map(); // Done
+    std::vector<Student> get_students(); // Done
     void print(std::vector<Student>& students);
     void print_index(std::string& teacher);
     void display_group(std::string& teacher); //
