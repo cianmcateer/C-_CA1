@@ -198,11 +198,11 @@ void menu() {
                     cin.clear();
                     std::getline(cin, search);
 
-                    if(is_correct(search,"^[a-zA-Z]*$)")) {
+                    if(is_correct(search, regex)) {
                         break;
                     }
                 }
-                cout << "Results for " << search << endl;
+                cout << "Results for " << search << "." << endl;
                 st.search_text(search, 0);
                 break;
             }
@@ -213,6 +213,20 @@ void menu() {
                 cout << "Enter search" << endl;
                 cin.ignore();
                 std::getline(cin, search);
+
+                // No special character, digits
+                const string regex = "^[a-zA-Z]*$";
+
+                while(!is_correct(search, regex)) {
+                    cout << "Input mismatch Please enter again" << endl;
+                    cin.clear();
+                    std::getline(cin, search);
+
+                    if(is_correct(search, regex)) {
+                        break;
+                    }
+                }
+                cout << "Results for " << search << "." << endl;
                 st.search_text(search, 1);
                 break;
             }
@@ -253,7 +267,7 @@ void menu() {
                     cin.ignore();
                     string add_teacher;
                     cout << "Add students teacher" << endl;
-                    std::getline(cin,add_teacher); // Allow to read white spaces
+                    std::getline(cin, add_teacher); // Allow to read white spaces
 
                     cout << "Student name" << endl;
                     string add_student_name;
