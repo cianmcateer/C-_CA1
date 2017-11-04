@@ -185,10 +185,21 @@ void menu() {
             case 9: {
 
                 cout << "Search by name" << endl;
-                string search;
                 cout << "Enter search" << endl;
+                string search;
                 cin.ignore();
                 std::getline(cin, search);
+
+                while(!is_correct(search,"^[a-zA-Z]*$)")) {
+                    cout << "Input mismatch please enter again" << endl;
+                    cin.clear();
+                    std::getline(cin, search);
+
+                    if(is_correct(search,"^[a-zA-Z]*$)")) {
+                        break;
+                    }
+                }
+                cout << "Results for " << search << endl;
                 st.search_text(search, 0);
                 break;
             }
