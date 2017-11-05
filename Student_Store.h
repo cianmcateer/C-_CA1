@@ -24,7 +24,7 @@ private:
     void replace_characters(Student& s, char old_char, char new_char);
     std::string save_path;
     void get_count(int& i);
-    bool teacher_exists(std::string& teacher);
+    bool teacher_exists(std::string teacher);
     std::string lower_case(std::string word);
 
 
@@ -36,11 +36,10 @@ public:
     void add(std::string& teacher, const Student& s);  // Basic implementation finished
     void clear(); // Done
 
-
-
     void update(std::string& teacher,int index,std::string name, int age, int attendance, float gpa, std::string comment);
 
-    void remove_group(const std::string& teacher); // Not implemented
+    void remove_group(std::string& teacher); // Done
+    void remove_student(std::string& teacher, int& index);
     void print_map(); // Done
     std::vector<Student> get_students(); // Done
     void print(std::vector<Student>& students);
@@ -52,6 +51,8 @@ public:
     bool is_full(std::string& teacher); // Done not implemented yet in main
     void top_ten();
     void has_failed(std::vector<Student>& students);
+    bool class_empty(std::string& teacher);
+    bool in_range(std::string& teacher, int& index);
 
     void search_age(int& age);
     void search_text(std::string& text, int choice);
