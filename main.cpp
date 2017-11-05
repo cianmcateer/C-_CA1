@@ -15,7 +15,6 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-
 void read_file();
 void init();
 void menu();
@@ -36,7 +35,7 @@ void init() {
 
     // Allows us to hide user input for password
     termios old_terminal; //
-    tcgetattr(STDIN_FILENO, &oldt);
+    tcgetattr(STDIN_FILENO, &old_terminal);
     termios new_terminal = old_terminal;
     new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
     tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
@@ -61,7 +60,7 @@ void init() {
         std::getline(cin, password_attempt);
     }
 
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // Resets masked user input
+    tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal); // Resets masked user input
     cout << "Welcome " << user_name << "..." << endl;
     menu();
 
@@ -390,7 +389,7 @@ void menu() {
                         // print students first name only
                         cout << student_name.substr(0,student_name.find(' ')) << " has been added!" << endl;
 
-                        cout << "Would you like to add another student? (Y/y: yes : any other key: no)" << endl;
+                        cout << "Would you like to add another student? (Y/y: yes) (any other key: no)" << endl;
                         cin >> repeat;
                     }
                 }
@@ -540,7 +539,7 @@ void menu() {
                 string new_teacher;
                 std::getline(cin,new_teacher);
 
-                const string regex = "[^\d\W]+";
+                const string regex = "[a-z\A-Z ,.'-]+$";
                 while(!is_correct(new_teacher, regex)) {
                     cout << "Please try again" << endl;
                     cin.clear();
@@ -567,9 +566,35 @@ void menu() {
             }
 
             case 17: {
+                cout << "Please enter password to delete data" << endl;
 
-                st.clear();
-                cout << "All data has been cleared" << endl;
+                // Allows us to hide user input for password
+                termios old_terminal; //
+                tcgetattr(STDIN_FILENO, &old_terminal);
+                termios new_terminal = old_terminal;
+                new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
+                tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
+                cin.ignore();
+                string password;
+                std::getline(cin, password);
+                tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal); // Resets masked user input
+
+                if(is_password(password)) {
+                    char choice;
+                    cout << "Are you sure you want to delete all records?" << endl;
+                    cout << "Enter (Y | y) or Abort by entering any other key" << endl;
+
+                    cin >> choice;
+
+                    if(choice == 'y' || choice == 'Y') {
+                        st.clear();
+                        cout << "All data has been cleared" << endl;
+                    } else {
+                        cout << "Deletion aborted" << endl;
+                    }
+                } else {
+                    cout << "Access denied" << endl;
+                }
                 break;
 
             }
@@ -640,9 +665,10 @@ void menu() {
                 break;
             }
 
-            default:
+            default: {
                 cout << "Invalid input please try again." << endl;
                 break;
+            }
         }
     }
 }
