@@ -393,6 +393,27 @@ void menu() {
                 exit(0);
             }
 
+            case 19: {
+                cin.ignore();
+                cout << "Delete class" << endl;
+                cout << "Please enter teacher name" << endl;
+                string teacher;
+                std::getline(cin, teacher);
+
+                const string regex = "[^\d\W]+";
+                while(!is_correct(teacher, regex)) {
+                    cout << "Please try again" << endl;
+                    cin.clear();
+                    std::getline(cin, teacher);
+
+                    if(is_correct(teacher, regex)) {
+                        break;
+                    }
+                }
+                st.remove_group(teacher);
+                break;
+            }
+
             default:
                 cout << "Invalid input please try again." << endl;
                 break;
