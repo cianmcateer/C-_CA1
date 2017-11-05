@@ -12,8 +12,8 @@ std::map<std::string,std::vector<Student> > Student_Store::back_up_data() {
     std::map<std::string,std::vector<Student> > map;
 
     Student s1("Cian McAteer",21,15,44,"Good");
-    Student s2("Jp mcdoug",15,77,44,"shite");
-    Student s3("sam sung",44,11,33,"grand");
+    Student s2("Matthew Fitzsimons",15,77,44,"Excellent");
+    Student s3("Greg Hughes",44,11,33,"Bad attitude");
     std::vector<Student> vec1;
     vec1.push_back(s1);
     vec1.push_back(s2);
@@ -171,7 +171,7 @@ void Student_Store::display_group(std::string& teacher) {
     }
 }
 
-bool Student_Store::teacher_exists(std::string& teacher) {
+bool Student_Store::teacher_exists(std::string teacher) {
     std::string lower_teacher = lower_case(teacher);
     for(auto& key : school_data) {
         std::string lower_key = lower_case(key.first);
@@ -202,12 +202,19 @@ void Student_Store::create_group(std::string& teacher) {
 
 }
 
-void Student_Store::remove_group(const std::string& teacher) {
+void Student_Store::remove_group(std::string& teacher) {
+
+
     // Create iterator of map
     std::map<std::string,std::vector<Student> >::iterator iter;
     // Find matching key and delete
     iter = school_data.find(teacher);
-    school_data.erase(iter);
+
+    if(iter != school_data.end()) {
+        school_data.erase(iter);
+    } else {
+        std::cout << "Teacher not found" << std::endl;
+    }
 }
 
 void Student_Store::save() {
