@@ -326,7 +326,25 @@ void menu() {
 
                         cout << "GPA" << endl;
                         float gpa;
-                        cin >> gpa;
+                        do {
+                            cout << "Enter grade" << endl;
+                            cin >> gpa;
+
+                            if(cin.fail()) {
+                                cout << "Please enter a number (No characters)" << endl;
+                                cin.clear();
+                                cin.ignore(256, '\n'); // Clear and ignore last line to prevent statement to be consta
+                            }
+                            else if(gpa > 100) {
+                                cout << "Grades can only be marked to 100" << endl;
+                            }
+                            else if(!is_pos(gpa)){
+                                cout << "Enter a positive value" << endl;
+                            } else {
+                                break; // Exit loop
+                            }
+
+                        } while(!is_pos(gpa) || gpa > 100 || !cin.fail());
 
                         cout << "Comment" << endl;
                         string comment;
