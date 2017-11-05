@@ -204,7 +204,6 @@ void Student_Store::create_group(std::string& teacher) {
 
 void Student_Store::remove_group(std::string& teacher) {
 
-
     // Create iterator of map
     std::map<std::string,std::vector<Student> >::iterator iter;
     // Find matching key and delete
@@ -215,6 +214,24 @@ void Student_Store::remove_group(std::string& teacher) {
     } else {
         std::cout << "Teacher not found" << std::endl;
     }
+}
+
+bool Student_Store::class_empty(std::string& teacher) {
+    return school_data[teacher].size() == 0;
+}
+
+bool Student_Store::in_range(std::string& teacher, int& index) {
+    return index <= (school_data[teacher].size()-1);
+}
+
+void Student_Store::remove_student(std::string& teacher, int& index) {
+
+    for(int i = 0;i < school_data[teacher].size();++i) {
+        if(index == i) {
+            school_data[teacher].erase(school_data[teacher].begin() + i);
+        }
+    }
+
 }
 
 void Student_Store::save() {
