@@ -281,8 +281,6 @@ void menu() {
                         }
                     }
 
-
-
                     if(st.class_empty(teacher)) {
                         cout << teacher << " has no students." << endl;
                     } else {
@@ -395,11 +393,41 @@ void menu() {
                 string teacher;
                 std::getline(cin, teacher);
 
+                const string name_regex = "[a-z\A-Z ,.'-]+$";
+
+                while(!is_correct(teacher, name_regex)) {
+                    cout << "please try again" << endl;
+                    cin.clear();
+                    std::getline(cin, teacher);
+
+                    if(is_correct(teacher, name_regex)) {
+                        break;
+                    }
+                }
+
                 cout << "Enter student index" << endl;
                 st.print_index(teacher);
 
                 int student_at;
                 cin >> student_at;
+
+                while(cin.fail() || !is_pos(student_at) || !st.in_range(teacher, student_at)) {
+
+                    if(!is_pos(student_at)) {
+                        cout << "Please enter a positive index" << endl;
+                    }
+                    if(cin.fail()) {
+                        cout << "Please enter a number" << endl;
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                    }
+                    if(!st.in_range(teacher, student_at)) {
+                        cout << "Index out of range" << endl;
+                    }
+                    cout << "Invalid input, please try again" << endl;
+                    cin.clear();
+                    cin >> student_at;
+                }
 
                 cin.ignore();
 
