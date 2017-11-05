@@ -2,6 +2,8 @@
 #include <string>
 #include <fstream>
 #include <iterator>
+#include <termios.h>
+#include <unistd.h>
 
 
 #include "Student.h"
@@ -28,15 +30,22 @@ int main(void) {
 void init() {
     cout << "Welcome to e-school.com" << endl;
 
-    /*cout << "Please enter you're name" << endl;
+    cout << "Please enter you're name" << endl;
     string user_name;
-    cin >> user_name;
+    std::getline(cin, user_name);
 
+    // Allows us to hide user input for password
+    termios old_terminal; //
+    tcgetattr(STDIN_FILENO, &oldt);
+    termios new_terminal = old_terminal;
+    new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
 
     string user_password = "password";
     cout << "Please enter password" << endl;
     string password_attempt;
-    cin >> password_attempt;
+    cin.clear();
+    std::getline(cin, password_attempt);
 
     int attempt = 4;
     while(!is_password(password_attempt)) {
@@ -48,10 +57,12 @@ void init() {
         cout << "Incorrect Password, try again" << endl;
 
         cout << "Enter password (attempts left = " << attempt << ")" << endl;
-        cin >> password_attempt;
+        cin.clear();
+        std::getline(cin, password_attempt);
     }
 
-    cout << "Welcome " << user_name << "..." << endl;*/
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // Resets masked user input
+    cout << "Welcome " << user_name << "..." << endl;
     menu();
 
 }
