@@ -470,9 +470,46 @@ void menu() {
                 int attendance;
                 cin >> attendance;
 
+                while(cin.fail() || attendance < -1 || attendance > 100) {
+                    cout << "Invalid input" << endl;
+
+                    if(cin.fail()) {
+                        cout << "No characters allowed" << endl;
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                    }
+                    if(attendance < -1) {
+                        cout << "Please enter a positive (or -1 to leave unchanged)" << endl;
+                    }
+                    if(attendance > 100) {
+                        cout << "Attendance is only marked out of 100" << endl;
+                    }
+                    cin.clear();
+                    cin >> attendance;
+                }
+
+
                 cout << "Change student gpa (enter -1 to leave the same)" << endl;
                 float gpa;
                 cin >> gpa;
+
+                while(cin.fail() || gpa < -1 || gpa > 100) {
+                    cout << "Invalid input" << endl;
+
+                    if(cin.fail()) {
+                        cout << "No characters allowed" << endl;
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                    }
+                    if(gpa < -1) {
+                        cout << "Please enter a positive (or -1 to leave unchanged)" << endl;
+                    }
+                    if(gpa > 100) {
+                        cout << "Grades are only marked out of 100" << endl;
+                    }
+                    cin.clear();
+                    cin >> gpa;
+                }
 
                 cin.ignore();
                 cout << "Change comment (enter 's' for no change)" << endl;
