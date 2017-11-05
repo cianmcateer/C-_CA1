@@ -269,18 +269,37 @@ void menu() {
                     cout << "Add students teacher" << endl;
                     std::getline(cin, teacher); // Allow to read white spaces
 
+                    const string name_regex = "[a-z\A-Z ,.'-]+$";
+
+                    while(!is_correct(teacher, name_regex)) {
+                        cout << "please try again" << endl;
+                        cin.clear();
+                        std::getline(cin, teacher);
+
+                        if(is_correct(teacher, name_regex)) {
+                            break;
+                        }
+                    }
+
 
 
                     if(st.class_empty(teacher)) {
                         cout << teacher << " has no students." << endl;
                     } else {
-                        const string name_regex = "[^\d\W]+";
-
 
                         cout << "Student name" << endl;
                         string student_name;
                         std::getline(cin, student_name);
 
+                        while(!is_correct(student_name, name_regex)) {
+                            cout << "please try again" << endl;
+                            cin.clear();
+                            std::getline(cin, student_name);
+
+                            if(is_correct(student_name, name_regex)) {
+                                break;
+                            }
+                        }
 
                         int age;
                         do {
@@ -351,6 +370,10 @@ void menu() {
                         cin.ignore();
                         std::getline(cin,comment);
 
+                        if(comment == "") {
+                            comment = "N/A";
+                        }
+
                         const Student new_student(student_name,age,attendance,gpa,comment);
 
                         st.add(teacher,new_student);
@@ -358,9 +381,8 @@ void menu() {
                         // print students first name only
                         cout << student_name.substr(0,student_name.find(' ')) << " has been added!" << endl;
 
-                        cout << "Would you like to add another student? (Y/y: yes : N/n no)" << endl;
+                        cout << "Would you like to add another student? (Y/y: yes : any other key: no)" << endl;
                         cin >> repeat;
-
                     }
                 }
                 break;
@@ -484,10 +506,8 @@ void menu() {
                 string teacher;
                 std::getline(cin, teacher);
 
-                if(st.class_empty(teacher)) {
-                    cout << "Class is empty" << endl;
-                } else {
-                    const string regex = "[^\d\W]+";
+
+                    const string regex = "[a-z\A-Z ,.'-]+$";
                     while(!is_correct(teacher, regex)) {
                         cout << "please try again" << endl;
                         cin.clear();
@@ -498,17 +518,22 @@ void menu() {
                         }
                     }
 
-                    st.print_index(teacher);
-                    cout << "Now enter index of student you wish to delete" << endl;
-                    int index;
-                    cin >> index;
-                    while(!is_pos(index) || !st.in_range(teacher, index)) {
-
-                        cout << "Invalid input, please try again" << endl;
+                    if(st.class_empty(teacher)) {
+                        cout << "Class is empty" << endl;
+                    } else {
+                        st.print_index(teacher);
+                        cout << "Now enter index of student you wish to delete" << endl;
+                        int index;
                         cin >> index;
+                        while(!is_pos(index) || !st.in_range(teacher, index)) {
+
+                            cout << "Invalid input, please try again" << endl;
+                            cin >> index;
+
+                        }
+                        st.remove_student(teacher,index);
                     }
-                    st.remove_student(teacher,index);
-                }
+
                 break;
             }
 
