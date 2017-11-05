@@ -63,7 +63,7 @@ void Student_Store::print_index(std::string& teacher) {
 void Student_Store::update(std::string& teacher,int index,std::string name, int age, int attendance, float gpa, std::string comment) {
 
 
-    if(name != "") {
+    if(name != "s") {
         school_data[teacher].at(index).set_name(name);
     }
 
@@ -79,7 +79,7 @@ void Student_Store::update(std::string& teacher,int index,std::string name, int 
         school_data[teacher].at(index).set_gpa(gpa);
     }
 
-    if(comment != "") {
+    if(comment != "s") {
         school_data[teacher].at(index).set_comment(comment);
     }
 
