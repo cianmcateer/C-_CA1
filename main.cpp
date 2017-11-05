@@ -265,42 +265,87 @@ void menu() {
                 while(repeat == 'Y' || repeat == 'y') {
                     // Clear 'cin' of data
                     cin.ignore();
-                    string add_teacher;
+                    string teacher;
                     cout << "Add students teacher" << endl;
-                    std::getline(cin, add_teacher); // Allow to read white spaces
+                    std::getline(cin, teacher); // Allow to read white spaces
 
-                    cout << "Student name" << endl;
-                    string add_student_name;
-                    std::getline(cin,add_student_name);
 
-                    cout << "Age" << endl;
-                    int add_age;
-                    cin >> add_age;
 
-                    cout << "Attendance" << endl;
-                    int add_attendance;
-                    cin >> add_attendance;
+                    if(st.class_empty(teacher)) {
+                        cout << teacher << " has no students." << endl;
+                    } else {
+                        const string name_regex = "[^\d\W]+";
 
-                    cout << "GPA" << endl;
-                    float add_gpa;
-                    cin >> add_gpa;
 
-                    cout << "Comment" << endl;
-                    string add_comment;
-                    cin.ignore();
-                    std::getline(cin,add_comment);
+                        cout << "Student name" << endl;
+                        string student_name;
+                        std::getline(cin, student_name);
 
-                    const Student new_student(add_student_name,add_age,add_attendance,add_gpa,add_comment);
 
-                    st.add(add_teacher,new_student);
+                        int age;
+                        do {
+                            cout << "Enter age" << endl;
+                            cin >> age;
 
-                    // print students first name only
-                    cout << add_student_name.substr(0,add_student_name.find(' ')) << " has been added!" << endl;
+                            if(cin.fail()) {
+                                cout << "Please enter a number (No characters)" << endl;
+                                cin.clear();
+                                cin.ignore(256, '\n');
+                            } else if(age > 18) {
+                                cout << "Students can't be older than 18" << endl;
+                            } else if(age < 12) {
+                                if(!is_pos(age)) {
+                                    cout << "Input must be a positive value" << endl;
+                                } else {
+                                    cout << "Student is too young to attend this school" << endl;
+                                }
+                            } else {
+                                break;
+                            }
+                        } while(!cin.fail() || age > 18 || age < 12);
 
-                    cout << "Would you like to add another student? (Y/y: yes : N/n no)" << endl;
-                    cin >> repeat;
-                    break;
+                        cout << "Attendance" << endl;
+                        int attendance;
+                        do {
+                            cout << "Enter attendance" << endl;
+                            cin >> attendance;
+
+                            if(cin.fail()) {
+                                cout << "Please enter a number (No characters)" << endl;
+                                cin.clear();
+                                cin.ignore(256, '\n');
+                            } else if(attendance > 100) {
+                                cout << "Attendance is marked out of 100. Please enter again." << endl;
+                            } else if(!is_pos(attendance)) {
+                                cout << "Input must be a positive value" << endl;
+                            } else {
+                                break;
+                            }
+                        } while(!cin.fail() || !is_pos(attendance) || attendance > 100);
+
+
+                        cout << "GPA" << endl;
+                        float gpa;
+                        cin >> gpa;
+
+                        cout << "Comment" << endl;
+                        string comment;
+                        cin.ignore();
+                        std::getline(cin,comment);
+
+                        const Student new_student(student_name,age,attendance,gpa,comment);
+
+                        st.add(teacher,new_student);
+
+                        // print students first name only
+                        cout << student_name.substr(0,student_name.find(' ')) << " has been added!" << endl;
+
+                        cout << "Would you like to add another student? (Y/y: yes : N/n no)" << endl;
+                        cin >> repeat;
+
+                    }
                 }
+                break;
             }
 
             case 13: {
