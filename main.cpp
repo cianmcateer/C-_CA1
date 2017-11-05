@@ -414,6 +414,41 @@ void menu() {
                 break;
             }
 
+            case 20: {
+                cin.ignore();
+                cout << "Delete student" << endl;
+                cout << "Enter students teacher" << endl;
+                string teacher;
+                std::getline(cin, teacher);
+
+                if(st.class_empty(teacher)) {
+                    cout << "Class is empty" << endl;
+                } else {
+                    const string regex = "[^\d\W]+";
+                    while(!is_correct(teacher, regex)) {
+                        cout << "please try again" << endl;
+                        cin.clear();
+                        std::getline(cin, teacher);
+
+                        if(is_correct(teacher, regex)) {
+                            break;
+                        }
+                    }
+
+                    st.print_index(teacher);
+                    cout << "Now enter index of student you wish to delete" << endl;
+                    int index;
+                    cin >> index;
+                    while(!is_pos(index) || !st.in_range(teacher, index)) {
+
+                        cout << "Invalid input, please try again" << endl;
+                        cin >> index;
+                    }
+                    st.remove_student(teacher,index);
+                }
+                break;
+            }
+
             default:
                 cout << "Invalid input please try again." << endl;
                 break;
