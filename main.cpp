@@ -431,13 +431,40 @@ void menu() {
 
                 cin.ignore();
 
-                cout << "Enter new student name (leave empty to stay same)" << endl;
+                cout << "Enter new student name (enter 's' for no change)" << endl;
                 string name;
                 std::getline(cin, name);
+
+                while(!is_correct(name, name_regex)) {
+                    cout << "please try again" << endl;
+                    cin.clear();
+                    std::getline(cin, name);
+
+                    if(is_correct(name, name_regex)) {
+                        break;
+                    }
+                }
 
                 cout << "Change student age (enter -1 to leave the same)" << endl;
                 int age;
                 cin >> age;
+
+                while(cin.fail() || age < -1 || age > 18) {
+                    cout << "Invalid input, please try again" << endl;
+                    if(age < -1) {
+                        cout << "Please enter a positive index (or -1 to leave unchanged)" << endl;
+                    }
+                    if(cin.fail()) {
+                        cout << "Please enter a number" << endl;
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                    }
+                    if(age > 18) {
+                        cout << "Sorry, students most be under 18 to attend" << endl;
+                    }
+                    cin.clear();
+                    cin >> age;
+                }
 
                 cout << "Change student attendance (enter -1 to leave the same)" << endl;
                 int attendance;
@@ -448,7 +475,7 @@ void menu() {
                 cin >> gpa;
 
                 cin.ignore();
-                cout << "Change comment (leave empty to stay same)" << endl;
+                cout << "Change comment (enter 's' for no change)" << endl;
                 std::string comment;
                 std::getline(cin, comment);
 
