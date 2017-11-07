@@ -1,12 +1,21 @@
 #include "Student_Store.h"
 
+/**
+* Constructor reads saved data into map
+*/
 Student_Store::Student_Store() {
     school_data = Student_Store::read_file();
-    save_path = "data.txt";
+    save_path = "test2.txt"; // test2.txt // test1.txt
 }
 
+/**
+* Destructor
+*/
 Student_Store::~Student_Store() {}
 
+/**
+* Returns a map of teachers and students that will be called if file read fails
+*/
 std::map<std::string,std::vector<Student> > Student_Store::back_up_data() {
 
     std::map<std::string,std::vector<Student> > map;
@@ -34,6 +43,12 @@ std::map<std::string,std::vector<Student> > Student_Store::back_up_data() {
 
 }
 
+/**
+* Replaces characters where ever they occur. Used to read file data in
+* @param s
+* @param old_char
+* @param new_char
+*/
 void Student_Store::replace_characters(Student& s, char old_char, char new_char) {
     std::string new_name = s.get_name();
     std::string new_comment = s.get_comment();
@@ -45,21 +60,43 @@ void Student_Store::replace_characters(Student& s, char old_char, char new_char)
     s.set_comment(new_comment);
 }
 
+/**
+* Adds new student to vector mapped to 'teacher'. (Will add new teacher if it does not exist)
+* @param teacher
+* @param s
+*/
 void Student_Store::add(std::string& teacher, const Student& s) {
     school_data[teacher].push_back(s);
 }
 
+/**
+* Deletes all data in map (Password protected in main)
+*/
 void Student_Store::clear() {
     school_data.clear();
 }
 
+/**
+* Prints All students of a certain teacher along with index
+* @param teacher
+*/
 void Student_Store::print_index(std::string& teacher) {
-
     for(unsigned int i = 0;i < school_data[teacher].size();++i) {
         std::cout << "INDEX: " << i << " " << school_data[teacher].at(i) << std::endl;
     }
 }
 
+/**
+* Updates student details at certain index of a teachers class
+*
+* @param teacher
+* @param index
+* @param name
+* @param age
+* @param attendance
+* @param gpa
+* @param comment
+*/
 void Student_Store::update(std::string& teacher,int index,std::string name, int age, int attendance, float gpa, std::string comment) {
 
 
@@ -85,6 +122,11 @@ void Student_Store::update(std::string& teacher,int index,std::string name, int 
 
 }
 
+/**
+* Returns whether or not a class is full
+* @param teacher
+* @return bool
+*/
 bool Student_Store::is_full(std::string& teacher) {
     if(school_data[teacher].size() > 30) {
         return true;
@@ -92,6 +134,10 @@ bool Student_Store::is_full(std::string& teacher) {
     return false;
 }
 
+/**
+* Takes all students from map and puts it into one vector
+* @return students
+*/
 std::vector<Student> Student_Store::get_students() {
     std::vector<Student> students;
     for(const auto& key : school_data) {
@@ -102,6 +148,10 @@ std::vector<Student> Student_Store::get_students() {
     return students;
 }
 
+/**
+* Prints all values in student vector
+* @param students
+*/
 void Student_Store::print(std::vector<Student>& students) {
     std::cout << "Total number of students: " << students.size() << std::endl;
     for(auto& s : students) {
@@ -109,9 +159,16 @@ void Student_Store::print(std::vector<Student>& students) {
     }
 }
 
+/**
+* Reads data from file line by line, creating a vector of string
+* Using the overridden input stream to convert the values into students (apart from the first value)
+* teacher and student objects are then added to 'map'
+* If file read fails, a Backup method will add run as a failsafe feature
+* @return map
+*/
 std::map<std::string,std::vector<Student> > Student_Store::read_file() {
 
-    std::string read_path = "data.txt";
+    std::string read_path = "test2.txt"; // test2.txt // test1.txt
 
     std::ifstream student_file(read_path);
     std::vector<Student> students;
@@ -149,7 +206,10 @@ std::map<std::string,std::vector<Student> > Student_Store::read_file() {
     return map;
 }
 
-
+/**
+* Displays all students in a certain teachers class
+* @param teacher
+*/
 void Student_Store::display_group(std::string& teacher) {
     if(school_data[teacher].empty()) {
         std::cout << "No students have been assigned to "
@@ -161,6 +221,10 @@ void Student_Store::display_group(std::string& teacher) {
     }
 }
 
+/**
+* tests whether a teachers name is in our map
+* @param teacher
+*/
 bool Student_Store::teacher_exists(std::string teacher) {
     std::string lower_teacher = lower_case(teacher);
     for(auto& key : school_data) {
@@ -173,6 +237,10 @@ bool Student_Store::teacher_exists(std::string teacher) {
     return false;
 }
 
+/**
+* Converts 'word' to lower case
+* @param word
+*/
 std::string Student_Store::lower_case(std::string word) {
     for(char& c : word) {
         c = tolower(c);
@@ -180,6 +248,10 @@ std::string Student_Store::lower_case(std::string word) {
     return word;
 }
 
+/**
+* Adds a new empty key to our map, will ignore if key is already inserted
+* @param teacher
+*/
 void Student_Store::create_group(std::string& teacher) {
 
     if(teacher_exists(teacher)) {
@@ -192,6 +264,10 @@ void Student_Store::create_group(std::string& teacher) {
 
 }
 
+/**
+* Uses an iterator to remove a key from map
+* @param teacher
+*/
 void Student_Store::remove_group(std::string& teacher) {
 
     // Create iterator of map
@@ -206,14 +282,29 @@ void Student_Store::remove_group(std::string& teacher) {
     }
 }
 
+/**
+* Tests whether a teacher has students
+* @param teacher
+* @return bool
+*/
 bool Student_Store::class_empty(std::string& teacher) {
     return school_data[teacher].size() == 0;
 }
 
+/**
+* Tests whether the index inputted is out of bounds
+* @param teacher
+* @param index
+*/
 bool Student_Store::in_range(std::string& teacher, int& index) {
     return index <= (school_data[teacher].size()-1);
 }
 
+/**
+* Deletes student from map
+* @param teacher
+* @param index
+*/
 void Student_Store::remove_student(std::string& teacher, int& index) {
 
     for(int i = 0;i < school_data[teacher].size();++i) {
@@ -224,6 +315,10 @@ void Student_Store::remove_student(std::string& teacher, int& index) {
 
 }
 
+/**
+* Writes all map data to a text file using ofstream
+* First whitespaces are replaced by '-' so we don't need to use a different delimeter
+*/
 void Student_Store::save() {
 
     std::ofstream save_file(save_path);
@@ -250,6 +345,10 @@ void Student_Store::save() {
 
 }
 
+/**
+* Creates a HTML page that displays all current students in map
+*
+*/
 void Student_Store::create_webpage() {
     std::ofstream html_page("e-school.html");
     // HTML header tags
@@ -257,12 +356,14 @@ void Student_Store::create_webpage() {
     html_page << "<link href=\"school_page.css\" rel=\"stylesheet\">"; // Style sheet link
     html_page << "</head><body>";
     html_page << "<h1>E-School.ie</h1>";
+    html_page << "<img id='titleImage' src=\"https://www.lusd.org//cms/lib/CA01001399/Centricity/Domain/1/School-backgrounds-8.jpg\" alt = \"School books\">";
     html_page << "<table border='1'>";
-    html_page << "<tr><td>Teacher</td><td>Student name</td><td>Age</td><td>Attendance</td><td>GPA</td><td>Comment</td></tr>";
+    html_page << "<h2>Current students</h2>";
+    html_page << "<tr><td class='title'>Teacher</td><td class='title'>Student name</td><td class='title'>Age</td><td class='title'>Attendance</td><td class='title'>GPA</td><td class='title'>Comment</td></tr>";
     for(auto& key : school_data) {
         for(auto& s : key.second) {
             html_page << "<tr>";
-            html_page << "<td>" << key.first << "</td>" << s.to_html();
+            html_page << "<td>" << key.first << "</td>" << s.to_html(); // Converts to HTML string
             html_page << "</tr>";
         }
     }
@@ -272,6 +373,10 @@ void Student_Store::create_webpage() {
     html_page.close();
 }
 
+/**
+* Uses a priority queue to display the ten best students
+* If there are less than 10 students then it will display all
+*/
 void Student_Store::top_ten() {
 
     // Use to sort priority queue
@@ -293,7 +398,7 @@ void Student_Store::top_ten() {
     if(pq.size() < top_students) {
         top_students = pq.size();
     }
-    for(int i = 0;i < top_students;++i) {
+    for(unsigned int i = 0;i < top_students;++i) {
         // Print highest priority object
         std::cout << "Name: " << pq.top().get_name() << " GPA: " << pq.top().get_gpa() << std::endl;
         pq.pop(); // Take off highest priority so we can print the next highest priority student
@@ -301,6 +406,10 @@ void Student_Store::top_ten() {
 
 }
 
+/**
+* Prints all students who have failed their overall results
+* @param students
+*/
 void Student_Store::has_failed(std::vector<Student>& students) {
     const unsigned int pass = 40;
     for(auto& s : students) {
@@ -309,7 +418,11 @@ void Student_Store::has_failed(std::vector<Student>& students) {
         }
     }
 }
-
+/**
+* Returns Message based on i
+* @param i
+*
+*/
 void Student_Store::get_count(int& i) {
     if(i == 0) {
         std::cout << "No results" << std::endl;
@@ -320,6 +433,11 @@ void Student_Store::get_count(int& i) {
     }
 }
 
+/**
+* Displays all students aged the same as user argument
+* calls get_count() to display the number of results
+* @param age
+*/
 void Student_Store::search_age(int& age) {
 
     int count = 0;
@@ -335,6 +453,13 @@ void Student_Store::search_age(int& age) {
     get_count(count);
 }
 
+/**
+* Prints all students that contain characters in 'text'
+* User can choose whether to search by comment or name
+*
+* @param text
+* @param choice
+**/
 void Student_Store::search_text(std::string& text, int choice) {
     int count = 0;
 
@@ -364,6 +489,13 @@ void Student_Store::search_text(std::string& text, int choice) {
 
 }
 
+/**
+* Prints out all Students that have a
+* grade greater or equal to
+* the user argument
+*
+* @param higher_than
+*/
 void Student_Store::search_gpa(float& higher_than) {
 
     int count = 0;
@@ -378,19 +510,37 @@ void Student_Store::search_gpa(float& higher_than) {
     get_count(count);
 }
 
+/**
+* Overrides the output stream operator so our objects values can be viewed
+* @param output_stream
+* @param st
+* @return output_stream
+*
+*/
 std::ostream& operator<<(std::ostream& output_stream, Student_Store& st) {
-    output_stream << "Number of current teachers " << st.get_map().size() << "." << std::endl;
+    output_stream << "Number of current teachers is " << st.get_map().size() << "." << std::endl;
+
 
     for(auto& key : st.get_map()) {
-        output_stream << key.first << std::endl;
+
+        std::string border(key.first.length()+4, '*');
+        std::string padding(key.first.length() / 2 -1, ' ');
+
+        output_stream << padding << "Teacher" << std::endl;
+        output_stream << border << std::endl;        
+        output_stream << '*' << ' ' << key.first << ' ' << '*' << std::endl;
+        output_stream << border << std::endl;
         std::vector<Student> students = key.second;
+        if(students.empty()) {
+            output_stream << '\t' << "Class is empty" << std::endl;
+            output_stream << std::endl;
+        }
         std::sort(students.begin(), students.end());
 
         for(const auto& s : students) {
-            output_stream << s << std::endl;
+            output_stream << '\t' << s << std::endl;
         }
 
     }
-
     return output_stream;
 }
