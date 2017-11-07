@@ -11,17 +11,17 @@ std::map<std::string,std::vector<Student> > Student_Store::back_up_data() {
 
     std::map<std::string,std::vector<Student> > map;
 
-    Student s1("Cian McAteer",21,15,44,"Good");
-    Student s2("Matthew Fitzsimons",15,77,44,"Excellent");
-    Student s3("Greg Hughes",44,11,33,"Bad attitude");
+    Student s1("Cian McAteer",13,15,44,"Good");
+    Student s2("Matthew Fitzsimons",14,77,44,"Excellent");
+    Student s3("Greg Hughes",16,11,33,"Bad attitude");
     std::vector<Student> vec1;
     vec1.push_back(s1);
     vec1.push_back(s2);
     vec1.push_back(s3);
 
-    Student s4("Jamie samuel",22,13,22,"Excellent");
-    Student s5("micky samuel",12,23,52,"good effort");
-    Student s6("Jamie jones",11,12,11,"Wonderful");
+    Student s4("Jamie samuel",10,13,22,"Excellent");
+    Student s5("micky samuel",11,23,52,"good effort");
+    Student s6("Jamie jones",12,12,11,"Wonderful");
     std::vector<Student> vec2;
     vec2.push_back(s4);
     vec2.push_back(s5);
@@ -90,16 +90,6 @@ bool Student_Store::is_full(std::string& teacher) {
         return true;
     }
     return false;
-}
-
-void Student_Store::print_map() {
-    std::cout << "Number of teachers: " << school_data.size() << "." << std::endl;
-    for(auto& sd : school_data) {
-        std::cout << sd.first << ":" << std::endl;
-        for(auto& s : sd.second) {
-            std::cout << "\t" << s << std::endl;
-        }
-    }
 }
 
 std::vector<Student> Student_Store::get_students() {
@@ -386,4 +376,21 @@ void Student_Store::search_gpa(float& higher_than) {
         }
     }
     get_count(count);
+}
+
+std::ostream& operator<<(std::ostream& output_stream, Student_Store& st) {
+    output_stream << "Number of current teachers " << st.get_map().size() << "." << std::endl;
+
+    for(auto& key : st.get_map()) {
+        output_stream << key.first << std::endl;
+        std::vector<Student> students = key.second;
+        std::sort(students.begin(), students.end());
+
+        for(const auto& s : students) {
+            output_stream << s << std::endl;
+        }
+
+    }
+
+    return output_stream;
 }
