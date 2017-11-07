@@ -102,7 +102,7 @@ void menu() {
                 break;
             }
             case 1: {
-                st.print_map();
+                cout << st << endl;
                 break;
             }
             case 2: {
