@@ -40,7 +40,6 @@ public:
 
     void remove_group(std::string& teacher); // Done
     void remove_student(std::string& teacher, int& index);
-    void print_map(); // Done
     std::vector<Student> get_students(); // Done
     void print(std::vector<Student>& students);
     void print_index(std::string& teacher);
@@ -57,5 +56,11 @@ public:
     void search_age(int& age);
     void search_text(std::string& text, int choice);
     void search_gpa(float& gpa);
+
+    inline std::map<std::string, std::vector<Student> > get_map() {
+        return school_data;
+    }
+
+    friend std::ostream& operator<<(std::ostream& output_stream, Student_Store& st);
 
 };
