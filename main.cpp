@@ -102,6 +102,7 @@ void menu() {
                 break;
             }
             case 1: {
+                // Prints out all data by overloading '<<'
                 cout << st << endl;
                 break;
             }
@@ -291,13 +292,11 @@ void menu() {
                         }
                     }
 
-                    if(st.class_empty(teacher)) {
-                        cout << teacher << " has no students." << endl;
-                    } else {
 
-                        cout << "Student name" << endl;
-                        string student_name;
-                        std::getline(cin, student_name);
+
+                    cout << "Student name" << endl;
+                    string student_name;
+                    std::getline(cin, student_name);
 
                         while(!is_correct(student_name, name_regex)) {
                             cout << "please try again" << endl;
@@ -391,7 +390,7 @@ void menu() {
 
                         cout << "Would you like to add another student? (Y/y: yes) (any other key: no)" << endl;
                         cin >> repeat;
-                    }
+
                 }
                 break;
             }
@@ -498,7 +497,6 @@ void menu() {
                     cin >> attendance;
                 }
 
-
                 cout << "Change student gpa (enter -1 to leave the same)" << endl;
                 float gpa;
                 cin >> gpa;
@@ -604,6 +602,7 @@ void menu() {
                 cout << "Your data has been saved" << endl;
                 cout << "Goodbye!" << endl;
                 exit(0);
+                break;
             }
 
             case 19: {
@@ -613,7 +612,7 @@ void menu() {
                 string teacher;
                 std::getline(cin, teacher);
 
-                const string regex = "[^\d\W]+";
+                const string regex = "[a-z\A-Z ,.'-]+$";
                 while(!is_correct(teacher, regex)) {
                     cout << "Please try again" << endl;
                     cin.clear();
