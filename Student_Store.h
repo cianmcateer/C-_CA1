@@ -33,7 +33,7 @@ public:
     Student_Store(); // Done
     ~Student_Store(); // Done
 
-    void add(std::string& teacher, const Student& s);  // Basic implementation finished
+    void add(std::string& teacher, const Student& s);  // Done
     void clear(); // Done
 
     void update(std::string& teacher,int index,std::string name, int age, int attendance, float gpa, std::string comment);
@@ -57,7 +57,7 @@ public:
     void search_text(std::string& text, int choice);
     void search_gpa(float& gpa);
 
-    inline std::map<std::string, std::vector<Student> > get_map() {
+    inline std::map<std::string, std::vector<Student> > get_map() const {
         return school_data;
     }
 
