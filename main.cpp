@@ -5,7 +5,6 @@
 #include <termios.h>
 #include <unistd.h>
 
-
 #include "Student.h"
 #include "Student_Store.h"
 #include "util.h"
@@ -15,7 +14,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-void read_file();
+void read_file(const std::string path);
 void init();
 void menu();
 bool login();
@@ -66,10 +65,9 @@ void init() {
 
 }
 
-void read_help_file() {
+void read_file(const std::string path) {
     // Fix file path problem
-    const string help_path = "files/help.txt";
-    std::ifstream help_menu(help_path);
+    std::ifstream help_menu(path);
     string line;
     if(help_menu.is_open()) {
         // Will read line until new line is detected
@@ -88,7 +86,7 @@ void menu() {
     Student_Store st;
 
     while(true) {
-        read_help_file(); // Help menu
+        read_file("files/help.txt"); // Help menu
         while(!(cin >> choice)) { // Input validation only accepts integers
             cout << "Sorry please enter a number" << endl;
             cin.clear();
@@ -116,54 +114,62 @@ void menu() {
                 break;
             }
             case 3: {
-                cout << "Display by grade" << endl;
+                cout << "Display by custom sort" << endl;
 
                 std::vector<Student> students = st.get_students();
-                // Third argument allows us to custom sort our vector
-                std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
-                    return s1.get_gpa() > s2.get_gpa();
-                });
 
-                st.print(students);
+                cout << "Please enter choose from one of the following options." << endl;
+
+                read_file("files/sort_options.txt");
+
+                int sort_type;
+
+                while(!(cin >> sort_type)) {
+                    cout << "Please enter a number" << endl;
+                    cin.clear();
+                    cin.ignore(100,'\n'); // Stops message from printing more than once if user enters more than one character
+                }
+
+                if(sort_type == 1) {
+                    cout << "Sorted by Name." << endl;
+                    std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
+                        return s1.get_name() < s2.get_name();
+                    });
+                    st.print(students);
+                } else if(sort_type == 2) {
+                    cout << "Sorted by Age." << endl;
+                    std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
+                        return s1.get_age() > s2.get_age();
+                    });
+                    st.print(students);
+                } else if(sort_type == 3) {
+                    // Third argument allows us to custom sort our vector
+                    cout << "Sorted by GPA." << endl;
+                    std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
+                        return s1.get_gpa() > s2.get_gpa();
+                    });
+                    st.print(students);
+                } else {
+                    cout << "Invalid input" << endl;
+                }
+
                 break;
             }
-            case 4:{
-                std::cout << "Display by name" << endl;
-                std::vector<Student> students = st.get_students();
 
-                std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
-                    return s1.get_name() < s2.get_name();
-                });
-
-                st.print(students);
-                break;
-            }
-            case 5: {
-                std::cout << "Students from oldest to youngest" << endl;
-                std::vector<Student> students = st.get_students();
-
-                std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
-                    return s1.get_age() > s2.get_age();
-                });
-
-                st.print(students);
-                break;
-            }
-
-            case 6: {
+            case 4: {
                 cout << "Top students" << endl;
                 st.top_ten();
                 break;
             }
 
-            case 7: {
+            case 5: {
                 cout << "Display failing students" << endl;
                 std::vector<Student> students = st.get_students();
                 st.has_failed(students);
                 break;
             }
 
-            case 8: {
+            case 6: {
                 cout << "Search by age" << endl;
                 int age;
 
@@ -193,7 +199,7 @@ void menu() {
                 break;
             }
 
-            case 9: {
+            case 7: {
 
                 cout << "Search by name" << endl;
                 cout << "Enter search" << endl;
@@ -218,7 +224,7 @@ void menu() {
                 break;
             }
 
-            case 10: {
+            case 8: {
                 cout << "Search by comment" << endl;
                 string search;
                 cout << "Enter search" << endl;
@@ -242,7 +248,7 @@ void menu() {
                 break;
             }
 
-            case 11: {
+            case 9: {
                 cout << "Search by grade" << endl;
                 float grade;
                 do {
@@ -270,7 +276,7 @@ void menu() {
                 break;
             }
 
-            case 12: {
+            case 10: {
 
                 char repeat = 'Y';
                 while(repeat == 'Y' || repeat == 'y') {
@@ -291,8 +297,6 @@ void menu() {
                             break;
                         }
                     }
-
-
 
                     cout << "Student name" << endl;
                     string student_name;
@@ -395,7 +399,7 @@ void menu() {
                 break;
             }
 
-            case 13: {
+            case 11: {
                 cin.ignore();
                 cout << "Update student" << endl;
                 cout << "Enter teacher name" << endl;
@@ -527,10 +531,9 @@ void menu() {
                 st.update(teacher, student_at,name,age,attendance,gpa,comment);
 
                 break;
-
             }
 
-            case 14: {
+            case 12: {
                 cin.ignore();
                 cout << "Create new Group" << endl;
                 cout << "Please enter teacher name" << endl;
@@ -551,19 +554,19 @@ void menu() {
                 break;
             }
 
-            case 15: {
+            case 13: {
                 st.create_webpage();
                 cout << "Your webpage has been created" << endl;
                 break;
             }
 
-            case 16: {
+            case 14: {
                 st.save();
                 cout << "Data has been saved!" << endl;
                 break;
             }
 
-            case 17: {
+            case 15: {
                 cout << "Please enter password to delete data" << endl;
 
                 // Allows us to hide user input for password
@@ -597,7 +600,7 @@ void menu() {
 
             }
 
-            case 18: {
+            case 16: {
                 st.save();
                 cout << "Your data has been saved" << endl;
                 cout << "Goodbye!" << endl;
@@ -605,9 +608,9 @@ void menu() {
                 break;
             }
 
-            case 19: {
+            case 17: {
                 cin.ignore();
-                cout << "Delete class" << endl;
+                cout << "Remove class" << endl;
                 cout << "Please enter teacher name" << endl;
                 string teacher;
                 std::getline(cin, teacher);
@@ -626,13 +629,12 @@ void menu() {
                 break;
             }
 
-            case 20: {
+            case 18: {
                 cin.ignore();
-                cout << "Delete student" << endl;
+                cout << "Remove student" << endl;
                 cout << "Enter students teacher" << endl;
                 string teacher;
                 std::getline(cin, teacher);
-
 
                     const string regex = "[a-z\A-Z ,.'-]+$";
                     while(!is_correct(teacher, regex)) {
@@ -660,7 +662,6 @@ void menu() {
                         }
                         st.remove_student(teacher,index);
                     }
-
                 break;
             }
 
