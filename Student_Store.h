@@ -15,7 +15,6 @@
 #include "Student.h"
 
 
-
 class Student_Store {
 
 private:
@@ -28,6 +27,19 @@ private:
     bool teacher_exists(std::string teacher);
     std::string lower_case(std::string word);
     std::map<std::string,float> get_means();
+
+    template <typename T>
+    float sum(std::vector<T>& vec);
+
+    template <typename T>
+    float mean(std::vector<T>& vec);
+
+    template <typename T>
+    float st_dev(std::vector<T>& vec);
+
+    template <typename T>
+    std::vector<T> vec_minus_mean(std::vector<T>& vec);
+
 
 public:
     // Constructor / Destructor
@@ -66,5 +78,9 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& output_stream, Student_Store& st);
+    float pearson(std::vector<int>& vec1, std::vector<float>& vec2);
+
+    std::vector<int> get_all_attendance();
+    std::vector<float> get_all_gpa();    
 
 };

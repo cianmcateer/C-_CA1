@@ -559,8 +559,71 @@ std::map<std::string,float> Student_Store::get_means() {
 
 void Student_Store::display_averages() {
     std::map<std::string,float> class_averages = get_means();
-    
+
     for(auto& key : class_averages) {
         std::cout << "Teacher: " << key.first << " Class average: " << key.second << std::endl;
     }
+}
+
+std::vector<int> Student_Store::get_all_attendance() {
+    std::vector<int> attendances;
+    for(const auto& s : get_students()) {
+        attendances.push_back(s.get_attendance());
+    }
+    return attendances;
+}
+
+std::vector<float> Student_Store::get_all_gpa() {
+    std::vector<float> gpas;
+    for(const auto& s : get_students()) {
+        gpas.push_back(s.get_gpa());
+    }
+    return gpas;
+}
+
+template <typename T>
+float Student_Store::sum(std::vector<T>& vec) {
+    float total = 0;
+    for(unsigned int i = 0;i < vec.size();++i) {
+        total += vec.at(i);
+    }
+    return total;
+}
+
+template <typename T>
+float Student_Store::mean(std::vector<T>& vec) {
+    return sum(vec) / vec.size();
+}
+
+template <typename T>
+float Student_Store::st_dev(std::vector<T>& vec) {
+    float st_dev = 0.0;
+
+    for(int i = 0; i < vec.size(); ++i) {
+        st_dev += pow(vec[i] - mean(vec), 2);
+    }
+
+    return sqrt(st_dev / vec.size());
+}
+
+template <typename T>
+std::vector<T> Student_Store::vec_minus_mean(std::vector<T>& vec) {
+    std::vector<T> vec_minus_mean;
+    for(unsigned int i = 0;i < vec.size();++i) {
+        vec_minus_mean.push_back(vec.at(i) - mean(vec));
+    }
+    return vec_minus_mean;
+}
+
+float Student_Store::pearson(std::vector<int>& vec1, std::vector<float>& vec2) {
+
+    std::vector<int> vec1_minus_mean = vec_minus_mean(vec1);
+    std::vector<float> vec2_minus_mean = vec_minus_mean(vec2);
+
+    float sum = 0;
+    for(int i = 0; i < vec1_minus_mean.size();++i) {
+
+        sum += vec1_minus_mean.at(i) * vec2_minus_mean.at(i);
+    }
+    return sum / (vec1.size() * st_dev(vec1) * st_dev(vec2));
 }

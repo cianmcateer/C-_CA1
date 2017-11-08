@@ -20,11 +20,17 @@ void menu();
 bool login();
 bool is_password(string password);
 
+/**
+* Initialise Program
+*/
 int main(void) {
-    init();
+    menu();
     return 0;
 }
 
+/**
+* initial start of application and password validator
+*/
 void init() {
     cout << "Welcome to e-school.com" << endl;
 
@@ -662,6 +668,42 @@ void menu() {
                         }
                         st.remove_student(teacher,index);
                     }
+                break;
+            }
+
+            case 19: {
+                st.display_averages();
+                break;
+            }
+
+            case 20: {
+                std::vector<float> gpas = st.get_all_gpa();
+                std::vector<int> attendances = st.get_all_attendance();
+
+                float co_ef = st.pearson(attendances, gpas);
+                cout << "Pearson coeffiecient of attendances and gpas: " << st.pearson(attendances, gpas) << endl;
+                if(co_ef == 1) {
+                    cout << "There is a perfect correllation between attendance and results!" << endl;
+                }
+                else if(co_ef > 0.5) {
+                    cout << "Attendance and final grades are integrally linked" << endl;
+                }
+                else if(co_ef > 0) {
+                    cout << "There is some pattern between a student Attendance and his/her mark" << endl;
+                }
+                else if(co_ef == 0) {
+                    cout << "The two are completely unrelated" << endl;
+                }
+                else if(co_ef < 0) {
+                    cout << "It seems that students who don't go often attain higher grades" << endl;
+                }
+                else if(co_ef < 0.5) {
+                    cout << "Smart students don't go to school!" << endl;
+                }
+                else {
+                    cout << "This is an awful school!" << endl;
+                } 
+
                 break;
             }
 
