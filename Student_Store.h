@@ -10,28 +10,31 @@
 #include <cstring>
 #include <queue>
 #include <cctype>
+#include <math.h>
 
 #include "Student.h"
+
 
 
 class Student_Store {
 
 private:
-    // Local storage
-    std::map<std::string,std::vector<Student> > school_data;
+
+    std::map<std::string,std::vector<Student> > school_data; // Local storage
     std::map<std::string,std::vector<Student> > read_file();
     std::map<std::string,std::vector<Student> > back_up_data();
     void replace_characters(Student& s, char old_char, char new_char);
-    std::string save_path;
     void get_count(int& i);
     bool teacher_exists(std::string teacher);
     std::string lower_case(std::string word);
-
+    std::map<std::string,float> get_means();
 
 public:
     // Constructor / Destructor
     Student_Store(); // Done
     ~Student_Store(); // Done
+
+    void display_averages();
 
     void add(std::string& teacher, const Student& s);  // Done
     void clear(); // Done
@@ -56,6 +59,7 @@ public:
     void search_age(int& age);
     void search_text(std::string& text, int choice);
     void search_gpa(float& gpa);
+
 
     inline std::map<std::string, std::vector<Student> > get_map() const {
         return school_data;

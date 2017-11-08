@@ -5,7 +5,6 @@
 */
 Student_Store::Student_Store() {
     school_data = Student_Store::read_file();
-    save_path = "test2.txt"; // test2.txt // test1.txt
 }
 
 /**
@@ -168,9 +167,7 @@ void Student_Store::print(std::vector<Student>& students) {
 */
 std::map<std::string,std::vector<Student> > Student_Store::read_file() {
 
-    std::string read_path = "test2.txt"; // test2.txt // test1.txt
-
-    std::ifstream student_file(read_path);
+    std::ifstream student_file("test2.txt"); // test2.txt // test1.txt
     std::vector<Student> students;
 
     std::map<std::string,std::vector<Student> > map;
@@ -321,7 +318,7 @@ void Student_Store::remove_student(std::string& teacher, int& index) {
 */
 void Student_Store::save() {
 
-    std::ofstream save_file(save_path);
+    std::ofstream save_file("test2.txt"); // test2.txt // test1.txt
 
     if(save_file.is_open()) {
         for(auto& str : school_data) {
@@ -524,10 +521,9 @@ std::ostream& operator<<(std::ostream& output_stream, Student_Store& st) {
     for(auto& key : st.get_map()) {
 
         std::string border(key.first.length()+4, '*');
-        std::string padding(key.first.length() / 2 -1, ' ');
+        std::string padding(border.length() - key.first.length(), ' ');
 
-        output_stream << padding << "Teacher" << std::endl;
-        output_stream << border << std::endl;        
+        output_stream << border << std::endl;
         output_stream << '*' << ' ' << key.first << ' ' << '*' << std::endl;
         output_stream << border << std::endl;
         std::vector<Student> students = key.second;
@@ -543,4 +539,28 @@ std::ostream& operator<<(std::ostream& output_stream, Student_Store& st) {
 
     }
     return output_stream;
+}
+
+std::map<std::string,float> Student_Store::get_means() {
+    std::map<std::string,float> class_averages;
+    for(auto& key : school_data) {
+        float total = 0;
+        // Add up gpa's
+        for(auto& s : key.second) {
+            total += s.get_gpa();
+        }
+        // Will not add empty classes
+        if(!isnan(total / key.second.size())) {
+            class_averages[key.first] = total / key.second.size(); // Our average class GPA is mapped to its teacher (key)
+        }
+    }
+    return class_averages;
+}
+
+void Student_Store::display_averages() {
+    std::map<std::string,float> class_averages = get_means();
+    
+    for(auto& key : class_averages) {
+        std::cout << "Teacher: " << key.first << " Class average: " << key.second << std::endl;
+    }
 }
