@@ -3,8 +3,8 @@
 /**
 * Constructor reads saved data into map
 */
-Student_Store::Student_Store() {
-    school_data = Student_Store::read_file();
+Student_Store::Student_Store() : school_data(Student_Store::read_file()) {
+    
 }
 
 /**
@@ -594,6 +594,7 @@ template <typename T>
 float Student_Store::mean(std::vector<T>& vec) {
     return sum(vec) / vec.size();
 }
+
 
 template <typename T>
 float Student_Store::st_dev(std::vector<T>& vec) {
