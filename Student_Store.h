@@ -63,7 +63,7 @@ public:
     void create_group(std::string& teacher);
     void save(); // Done
     void create_webpage();
-    bool is_full(std::string& teacher); // Done not implemented yet in main
+    bool is_full(std::string& teacher); 
     void top_ten();
     void has_failed(std::vector<Student>& students);
     bool class_empty(std::string& teacher);
@@ -72,13 +72,14 @@ public:
     void search_age(int& age);
     void search_text(std::string& text, int choice);
     void search_gpa(float& gpa);
+
+    void clean_records();
     void save_school_records();
     std::set<Student> read_school_records();
 
 
-    inline std::map<std::string, std::vector<Student> > get_map() const {
-        return school_data;
-    }
+    inline std::map<std::string, std::vector<Student> > get_map() const;
+
 
     friend std::ostream& operator<<(std::ostream& output_stream, Student_Store& st);
     float pearson(std::vector<int>& vec1, std::vector<float>& vec2);

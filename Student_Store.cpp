@@ -39,6 +39,13 @@ std::map<std::string,std::vector<Student> > Student_Store::back_up_data() {
     return map;
 
 }
+/**
+* Getter for school_data used in output_stream operator override
+* @return school_data
+*/
+inline std::map<std::string, std::vector<Student> > Student_Store::get_map() const {
+    return school_data;
+}
 
 /**
 * Replaces characters where ever they occur. Used to read file data in
@@ -95,7 +102,6 @@ void Student_Store::print_index(std::string& teacher) {
 * @param comment
 */
 void Student_Store::update(std::string& teacher,int index,std::string name, int age, int attendance, float gpa, std::string comment) {
-
 
     if(name != "s") {
         school_data[teacher].at(index).set_name(name);
@@ -539,6 +545,10 @@ std::ostream& operator<<(std::ostream& output_stream, Student_Store& st) {
     return output_stream;
 }
 
+/**
+* Returns a map of teachers and their classes overall gpa
+* @return class_averages
+*/
 std::map<std::string,float> Student_Store::get_means() {
     std::map<std::string,float> class_averages;
     for(auto& key : school_data) {
@@ -555,6 +565,9 @@ std::map<std::string,float> Student_Store::get_means() {
     return class_averages;
 }
 
+/**
+* Prints "get_means" map
+*/
 void Student_Store::display_averages() {
     std::map<std::string,float> class_averages = get_means();
 
@@ -563,6 +576,9 @@ void Student_Store::display_averages() {
     }
 }
 
+/**
+* Returns a vector of all students attendances
+*/
 std::vector<int> Student_Store::get_all_attendance() {
     std::vector<int> attendances;
     for(const auto& s : get_students()) {
@@ -571,6 +587,10 @@ std::vector<int> Student_Store::get_all_attendance() {
     return attendances;
 }
 
+/**
+* Returns a vector of all students gpa's
+* @return gpas
+*/
 std::vector<float> Student_Store::get_all_gpa() {
     std::vector<float> gpas;
     for(const auto& s : get_students()) {
@@ -579,6 +599,9 @@ std::vector<float> Student_Store::get_all_gpa() {
     return gpas;
 }
 
+/**
+* Calculates the sum of a templated vector
+*/
 template <typename T>
 float Student_Store::sum(std::vector<T>& vec) {
     float total = 0;
@@ -588,17 +611,24 @@ float Student_Store::sum(std::vector<T>& vec) {
     return total;
 }
 
+/**
+* Returns the mean of a templated vector
+* @param vec
+* @return float
+*/
 template <typename T>
 float Student_Store::mean(std::vector<T>& vec) {
     return sum(vec) / vec.size();
 }
 
-
+/**
+*
+*/
 template <typename T>
 float Student_Store::st_dev(std::vector<T>& vec) {
     float st_dev = 0.0;
 
-    for(int i = 0; i < vec.size(); ++i) {
+    for(unsigned int i = 0; i < vec.size(); ++i) {
         st_dev += pow(vec[i] - mean(vec), 2);
     }
 
@@ -614,6 +644,13 @@ std::vector<T> Student_Store::vec_minus_mean(std::vector<T>& vec) {
     return vec_minus_mean;
 }
 
+/**
+* Calculates pearson coeffiecient of two vectors
+* both int and float vectors use the same template methods
+* @param vec1
+* @param vec2
+* @return float
+*/
 float Student_Store::pearson(std::vector<int>& vec1, std::vector<float>& vec2) {
 
     std::vector<int> vec1_minus_mean = vec_minus_mean(vec1);
@@ -627,7 +664,13 @@ float Student_Store::pearson(std::vector<int>& vec1, std::vector<float>& vec2) {
     return sum / (vec1.size() * st_dev(vec1) * st_dev(vec2));
 }
 
+/**
+* Appends all students to a text file
+* records.txt is used as a permenant history for the school
+*/
 void Student_Store::save_school_records() {
+
+    // Append data instead of replacing data
     std::ofstream save_records("records.txt",std::fstream::in | std::ios::out | std::ios::app);
 
     if(save_records.is_open()) {
@@ -648,26 +691,50 @@ void Student_Store::save_school_records() {
 std::set<Student> Student_Store::read_school_records() {
     std::ifstream read_records("records.txt");
 
-    std::vector<std::string> lines;
-    std::string line;
-
-    while(getline(read_records,line)) {
-        lines.push_back(line);
-
-    }
-
-
     std::set<Student> records;
-    Student s;
+    if(read_records.is_open()) {
+        std::vector<std::string> lines;
+        std::string line;
 
-    for(unsigned int i = 0;i < lines.size();++i) {
-        std::stringstream record_stream(lines[i]);
-        while(record_stream >> s) {
-            replace_characters(s,'-',' ');
-            records.insert(s);
+        while(getline(read_records,line)) {
+            lines.push_back(line);
         }
+
+        Student s;
+        for(unsigned int i = 0;i < lines.size();++i) {
+            std::stringstream record_stream(lines[i]);
+            while(record_stream >> s) {
+                replace_characters(s,'-',' ');
+                records.insert(s);
+            }
+        }
+        std::cout << records.size() << " students are/have attended this school." << std::endl;
+    } else {
+        std::cerr << "Unable to read records" << std::endl;
     }
 
-    std::cout << records.size() << std::endl;
     return records;
+}
+
+/**
+* Will read lines from records.txt and insert them into a set
+* Getting rid of duplicates and freeing up space
+*/
+void Student_Store::clean_records() {
+    std::set<Student> records = read_school_records();
+
+    // Default ofstream constructor Overrides text file all data in text file
+    std::ofstream save_records("records.txt");
+    if(save_records.is_open()) {
+        for(auto s : records) {
+            // None duplicated students are added back
+            replace_characters(s,' ','-');
+            save_records << s.get_name() << " " << s.get_age() << " " << s.get_attendance()
+            << " " << s.get_gpa() << " " << s.get_comment() << std::endl;
+        }
+    } else {
+        std::cerr << "Unable to clean records" << std::endl;
+    }
+
+
 }
