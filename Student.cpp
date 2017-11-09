@@ -91,3 +91,13 @@ bool operator<(const Student& s1, const Student& s2) {
     return false;
 
 }
+
+/**
+* Will add get_gpa to x
+* @param x
+* @param s
+* @return float
+*/
+float operator+=(float& x,Student& s) {
+    return x += s.get_gpa();
+}

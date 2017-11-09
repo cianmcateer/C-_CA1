@@ -5,6 +5,9 @@
 #include <sstream>
 #include <ostream>
 
+/**
+* Class stores pupil details
+*/
 class Student {
 private:
     // Instance variables
@@ -74,4 +77,5 @@ public:
     friend std::ostream& operator<<(std::ostream& output_stream, const Student& s);
     friend std::istream& operator>>(std::istream& input_stream, Student& s);
     friend bool operator<(const Student& s1, const Student& s2);
+    friend float operator+=(float& x,Student& s);
 };

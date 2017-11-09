@@ -15,7 +15,9 @@
 
 #include "Student.h"
 
-
+/**
+* Local storage for all teachers and pupils
+*/
 class Student_Store {
 
 private:
@@ -63,7 +65,7 @@ public:
     void create_group(std::string& teacher);
     void save(); // Done
     void create_webpage();
-    bool is_full(std::string& teacher); 
+    bool is_full(std::string& teacher);
     void top_ten();
     void has_failed(std::vector<Student>& students);
     bool class_empty(std::string& teacher);

@@ -559,7 +559,8 @@ std::map<std::string,float> Student_Store::get_means() {
         }
         // Will not add empty classes
         if(!isnan(total / key.second.size())) {
-            class_averages[key.first] = total / key.second.size(); // Our average class GPA is mapped to its teacher (key)
+            // Uses overriden '+=' for student class, will append 'get_gpa()' to variable
+            class_averages[key.first] = mean(key.second); // Our average class GPA is mapped to its teacher (key)
         }
     }
     return class_averages;
