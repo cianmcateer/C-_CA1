@@ -43,15 +43,16 @@ void init() {
     cout << "Please enter password" << endl;
     string password_attempt;
     cin.clear();
-    std::getline(cin, password_attempt);
 
     // Allows us to hide user input for password
     termios old_terminal; //
-
     tcgetattr(STDIN_FILENO, &old_terminal);
     termios new_terminal = old_terminal;
     new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
     tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
+    std::getline(cin, password_attempt);
+
+
 
     int attempt = 4;
     while(!is_password(password_attempt)) {
@@ -740,7 +741,7 @@ void menu() {
 
                 string admin_password;
                 std::getline(cin, admin_password);
-                
+
                 tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal); // Resets masked user input
 
                 if(admin_password == "admin_password") {
@@ -748,7 +749,7 @@ void menu() {
                         cout << s << endl;
                     }
                 } else {
-                    cout << "Access denied" << endl;
+                    cout << "Incorrect admin password Access denied!" << endl;
                 }
                 break;
             }
