@@ -7,10 +7,14 @@
 Student::Student(std::string name, int age, int attendance, float gpa ,std::string comment)
 : name(name) ,age(age) , attendance(attendance), gpa(gpa), comment(comment)  {}
 
-// Default Constructor
+/**
+* Default Constructor
+*/
 Student::Student() : name("Default name") ,age(0) , attendance(0), gpa(0), comment("Default comment")  {}
 
-// Destructor
+/**
+* Destructor
+*/
 Student::~Student(){}
 
 /**
@@ -23,6 +27,8 @@ std::string Student::to_html() {
     // don't need to convert floats and ints to strings
     std::ostringstream oss;
 
+    // Streams HTML tags and student details into oss
+    // We don't need to convert non string data types
     oss << "<td>" << this->name << "</td>"
     << "<td>" << this->age << "</td>"
     << "<td>" << this->attendance << "</td>"
@@ -35,6 +41,9 @@ std::string Student::to_html() {
 
 /**
 * Used to display students
+* @param output_stream
+* @param s
+* @return output_stream
 */
 std::ostream& operator<<(std::ostream& output_stream, const Student& s) {
 
@@ -47,6 +56,9 @@ std::ostream& operator<<(std::ostream& output_stream, const Student& s) {
 
 /**
 * Overloaded operator allows us to read in data from text files easier
+* @param input_stream
+* @param s
+* @return input_stream
 */
 std::istream& operator>>(std::istream& input_stream, Student& s) {
 
@@ -76,6 +88,9 @@ std::istream& operator>>(std::istream& input_stream, Student& s) {
 /**
 * Standard sort for students.
 * Compares by name then age then gpa
+* @param s1
+* @param s2
+* @return bool
 */
 bool operator<(const Student& s1, const Student& s2) {
 
