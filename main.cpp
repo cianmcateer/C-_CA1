@@ -24,7 +24,7 @@ bool is_password(string password);
 * Initialise Program
 */
 int main(void) {
-    menu();
+    init();
     return 0;
 }
 
@@ -38,18 +38,20 @@ void init() {
     string user_name;
     std::getline(cin, user_name);
 
-    // Allows us to hide user input for password
-    termios old_terminal; //
-    tcgetattr(STDIN_FILENO, &old_terminal);
-    termios new_terminal = old_terminal;
-    new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
-    tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
 
     string user_password = "password";
     cout << "Please enter password" << endl;
     string password_attempt;
     cin.clear();
     std::getline(cin, password_attempt);
+
+    // Allows us to hide user input for password
+    termios old_terminal; //
+
+    tcgetattr(STDIN_FILENO, &old_terminal);
+    termios new_terminal = old_terminal;
+    new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
 
     int attempt = 4;
     while(!is_password(password_attempt)) {
@@ -64,13 +66,17 @@ void init() {
         cin.clear();
         std::getline(cin, password_attempt);
     }
-
     tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal); // Resets masked user input
-    cout << "Welcome " << user_name << "..." << endl;
+
+    cout << "Welcome " << user_name.substr(0,user_name.find(' ')) << "..." << endl;
     menu();
 
 }
 
+/**
+* Displays the contents of the file path passed in
+* @param path
+*/
 void read_file(const std::string path) {
     // Fix file path problem
     std::ifstream help_menu(path);
@@ -721,14 +727,31 @@ void menu() {
 
             case 22: {
                 cout << "Read records" << endl;
+                cout << "To read confidential school records please enter admin password" << endl;
                 std::set<Student> records = st.read_school_records();
 
-                for(const auto& s : records) {
-                    cout << s << endl;
+                // Allows us to hide user input for password
+                termios old_terminal; //
+                tcgetattr(STDIN_FILENO, &old_terminal);
+                termios new_terminal = old_terminal;
+                new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
+                tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
+                cin.ignore();
+
+                string admin_password;
+                std::getline(cin, admin_password);
+                
+                tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal); // Resets masked user input
+
+                if(admin_password == "admin_password") {
+                    for(const auto& s : records) {
+                        cout << s << endl;
+                    }
+                } else {
+                    cout << "Access denied" << endl;
                 }
                 break;
             }
-
 
             default: {
                 cout << "Invalid input please try again." << endl;
