@@ -22,4 +22,6 @@
 *    18. Remove student                                     *
 *    19. Average grade per group                            *
 *    20. Correlation Coefficient                            *
+*    21. Add students to school records                     *
+*    22. Display records                                    *
 /************************************************************/
