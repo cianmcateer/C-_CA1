@@ -702,10 +702,27 @@ void menu() {
                 }
                 else {
                     cout << "This is an awful school!" << endl;
-                } 
+                }
 
                 break;
             }
+
+            case 21: {
+                cout << "Add to student Records" << endl;
+                st.save_school_records();
+                break;
+            }
+
+            case 22: {
+                cout << "Read records" << endl;
+                std::set<Student> records = st.read_school_records();
+
+                for(const auto& s : records) {
+                    cout << s << endl;
+                }
+                break;
+            }
+
 
             default: {
                 cout << "Invalid input please try again." << endl;

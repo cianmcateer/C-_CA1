@@ -3,12 +3,13 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <queue>
+#include <set>
 #include <string>
 #include <fstream>
 #include <algorithm>
 #include <sstream>
 #include <cstring>
-#include <queue>
 #include <cctype>
 #include <math.h>
 
@@ -71,6 +72,8 @@ public:
     void search_age(int& age);
     void search_text(std::string& text, int choice);
     void search_gpa(float& gpa);
+    void save_school_records();
+    std::set<Student> read_school_records();
 
 
     inline std::map<std::string, std::vector<Student> > get_map() const {
@@ -81,6 +84,6 @@ public:
     float pearson(std::vector<int>& vec1, std::vector<float>& vec2);
 
     std::vector<int> get_all_attendance();
-    std::vector<float> get_all_gpa();    
+    std::vector<float> get_all_gpa();
 
 };

@@ -3,9 +3,7 @@
 /**
 * Constructor reads saved data into map
 */
-Student_Store::Student_Store() : school_data(Student_Store::read_file()) {
-    
-}
+Student_Store::Student_Store() : school_data(Student_Store::read_file()) {}
 
 /**
 * Destructor
@@ -627,4 +625,49 @@ float Student_Store::pearson(std::vector<int>& vec1, std::vector<float>& vec2) {
         sum += vec1_minus_mean.at(i) * vec2_minus_mean.at(i);
     }
     return sum / (vec1.size() * st_dev(vec1) * st_dev(vec2));
+}
+
+void Student_Store::save_school_records() {
+    std::ofstream save_records("records.txt",std::fstream::in | std::ios::out | std::ios::app);
+
+    if(save_records.is_open()) {
+        for(auto& key : school_data) {
+            for(auto& s : key.second) {
+                replace_characters(s,' ','-');
+                save_records << s.get_name() << " " << s.get_age() << " " << s.get_attendance()
+                << " " << s.get_gpa() << " " << s.get_comment() << std::endl;
+            }
+        }
+        std::cout << "Records added" << std::endl;
+        save_records.close();
+    } else {
+        std::cerr << "Couldn't open records" << std::endl;
+    }
+}
+
+std::set<Student> Student_Store::read_school_records() {
+    std::ifstream read_records("records.txt");
+
+    std::vector<std::string> lines;
+    std::string line;
+
+    while(getline(read_records,line)) {
+        lines.push_back(line);
+
+    }
+
+
+    std::set<Student> records;
+    Student s;
+
+    for(unsigned int i = 0;i < lines.size();++i) {
+        std::stringstream record_stream(lines[i]);
+        while(record_stream >> s) {
+            replace_characters(s,'-',' ');
+            records.insert(s);
+        }
+    }
+
+    std::cout << records.size() << std::endl;
+    return records;
 }
