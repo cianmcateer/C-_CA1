@@ -292,21 +292,24 @@ void menu() {
                     cout << "Add students teacher" << endl;
                     std::getline(cin, teacher); // Allow to read white spaces
 
-                    const string name_regex = "[a-z\A-Z ,.'-]+$";
+                    if(st.is_full(teacher)) {
+                        cout << "Sorry, this class is full" << endl;
+                    } else {
+                        const string name_regex = "[a-z\A-Z ,.'-]+$";
 
-                    while(!is_correct(teacher, name_regex)) {
-                        cout << "please try again" << endl;
-                        cin.clear();
-                        std::getline(cin, teacher);
+                        while(!is_correct(teacher, name_regex)) {
+                            cout << "please try again" << endl;
+                            cin.clear();
+                            std::getline(cin, teacher);
 
-                        if(is_correct(teacher, name_regex)) {
-                            break;
+                            if(is_correct(teacher, name_regex)) {
+                                break;
+                            }
                         }
-                    }
 
-                    cout << "Student name" << endl;
-                    string student_name;
-                    std::getline(cin, student_name);
+                        cout << "Student name" << endl;
+                        string student_name;
+                        std::getline(cin, student_name);
 
                         while(!is_correct(student_name, name_regex)) {
                             cout << "please try again" << endl;
@@ -388,11 +391,13 @@ void menu() {
                         std::getline(cin,comment);
 
                         if(comment == "") {
-                            comment = "N/A";
+                            comment = "No comment.";
                         }
 
+                        // Put values into new student instance
                         const Student new_student(student_name,age,attendance,gpa,comment);
 
+                        // add to map
                         st.add(teacher,new_student);
 
                         // print students first name only
@@ -400,7 +405,7 @@ void menu() {
 
                         cout << "Would you like to add another student? (Y/y: yes) (any other key: no)" << endl;
                         cin >> repeat;
-
+                    }
                 }
                 break;
             }
@@ -710,6 +715,7 @@ void menu() {
             case 21: {
                 cout << "Add to student Records" << endl;
                 st.save_school_records();
+                st.clean_records();
                 break;
             }
 
