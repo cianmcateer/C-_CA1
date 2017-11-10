@@ -3,12 +3,12 @@
 #include <iostream>
 #include <string>
 #include <regex>
-
+#include <fstream>
 
 template <typename T> bool is_pos(T t) {
     return t >= 0;
 }
 
 bool is_correct(std::string text , const std::string regex);
-
-bool age_range(int x);
+void read_file(const std::string path);
+bool is_password(std::string password);

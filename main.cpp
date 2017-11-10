@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <iterator>
+#include <vector>
 #include <termios.h>
 #include <unistd.h>
 
@@ -18,14 +19,13 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-void read_file(const std::string path);
 void init();
 void menu();
-bool login();
-bool is_password(string password);
+
 
 /**
-* Initialise Program
+* Entry function initialises Program
+* @return 0
 */
 int main(void) {
     DEBUG ? menu() : init();
@@ -73,25 +73,6 @@ void init() {
 
     cout << "Welcome " << user_name.substr(0,user_name.find(' ')) << "..." << endl;
     menu();
-
-}
-
-/**
-* Displays the contents of the file path passed in
-* @param path
-*/
-void read_file(const std::string path) {
-    // Fix file path problem
-    std::ifstream help_menu(path);
-    string line;
-    if(help_menu.is_open()) {
-        // Will read line until new line is detected
-        while(std::getline(help_menu,line)) {
-            cout << line << endl;
-        }
-    } else {
-        std::cerr << "Error opening menu file" << endl;
-    }
 
 }
 
@@ -720,7 +701,6 @@ void menu() {
                 else {
                     cout << "This is an awful school!" << endl;
                 }
-
                 break;
             }
 
@@ -761,16 +741,11 @@ void menu() {
                 st.print_log();
                 break;
             }
-            
+
             default: {
                 cout << "Invalid input please try again." << endl;
                 break;
             }
         }
     }
-}
-
-bool is_password(string password) {
-    const string user_password = "password";
-    return user_password == password;
 }
