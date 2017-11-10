@@ -1,9 +1,10 @@
 #include "Student_Store.h"
 
 /**
-* Constructor reads saved data into map
+* Constructor reads saved data into map, also Initialises our record set and log stack
 */
-Student_Store::Student_Store() : school_data(Student_Store::read_file()) {}
+Student_Store::Student_Store()
+: school_data(Student_Store::read_file()), records(read_school_records()), logs(read_log()) {}
 
 /**
 * Destructor
@@ -71,6 +72,7 @@ void Student_Store::replace_characters(Student& s, char old_char, char new_char)
 */
 void Student_Store::add(std::string& teacher, const Student& s) {
     school_data[teacher].push_back(s);
+    add_log("Student added on");
 }
 
 /**
@@ -78,6 +80,7 @@ void Student_Store::add(std::string& teacher, const Student& s) {
 */
 void Student_Store::clear() {
     school_data.clear();
+    add_log("School database cleared on");
 }
 
 /**
@@ -92,7 +95,6 @@ void Student_Store::print_index(std::string& teacher) {
 
 /**
 * Updates student details at certain index of a teachers class
-*
 * @param teacher
 * @param index
 * @param name
@@ -123,6 +125,7 @@ void Student_Store::update(std::string& teacher,int index,std::string name, int 
         school_data[teacher].at(index).set_comment(comment);
     }
 
+    add_log("Student updated");
 }
 
 /**
@@ -262,7 +265,7 @@ void Student_Store::create_group(std::string& teacher) {
         school_data[teacher] = new_group;
         std::cout << teacher.substr(0,teacher.find(' ')) << " class has been created" << std::endl;
     }
-
+    add_log("Group created on ");
 }
 
 /**
@@ -281,6 +284,7 @@ void Student_Store::remove_group(std::string& teacher) {
     } else {
         std::cout << "Teacher not found" << std::endl;
     }
+    add_log("Group removed on ");
 }
 
 /**
@@ -308,11 +312,13 @@ bool Student_Store::in_range(std::string& teacher, int& index) {
 */
 void Student_Store::remove_student(std::string& teacher, int& index) {
 
-    for(int i = 0;i < school_data[teacher].size();++i) {
+    for(unsigned int i = 0;i < school_data[teacher].size();++i) {
         if(index == i) {
             school_data[teacher].erase(school_data[teacher].begin() + i);
         }
     }
+
+    add_log("Student removed on");
 
 }
 
@@ -362,11 +368,13 @@ void Student_Store::create_webpage() {
     html_page << "<h2>Current students</h2>";
     html_page << "<tr><td class='title'>Teacher</td><td class='title'>Student name</td><td class='title'>Age</td><td class='title'>Attendance</td><td class='title'>GPA</td><td class='title'>Comment</td></tr>";
     for(auto& key : school_data) {
+
         for(auto& s : key.second) {
             html_page << "<tr>";
             html_page << "<td>" << key.first << "</td>" << s.to_html(); // Converts to HTML string
             html_page << "</tr>";
         }
+
     }
     html_page << "</table>";
     // Close off page and end connection
@@ -487,7 +495,6 @@ void Student_Store::search_text(std::string& text, int choice) {
         }
         get_count(count);
     }
-
 }
 
 /**
@@ -513,12 +520,13 @@ void Student_Store::search_gpa(float& higher_than) {
 
 /**
 * Overrides the output stream operator so our objects values can be viewed
+* Teacher name is in a box while Student class has its own override
 * @param output_stream
 * @param st
 * @return output_stream
 *
 */
-std::ostream& operator<<(std::ostream& output_stream, Student_Store& st) {
+std::ostream& operator<<(std::ostream& output_stream, const Student_Store& st) {
     output_stream << "Number of current teachers is " << st.get_map().size() << "." << std::endl;
 
 
@@ -559,7 +567,7 @@ std::map<std::string,float> Student_Store::get_means() {
         }
         // Will not add empty classes
         if(!isnan(total / key.second.size())) {
-            // Uses overriden '+=' for student class, will append 'get_gpa()' to variable
+            // Uses overriden '+=' from student class, will append 'get_gpa()' to variable
             class_averages[key.first] = mean(key.second); // Our average class GPA is mapped to its teacher (key)
         }
     }
@@ -658,8 +666,7 @@ float Student_Store::pearson(std::vector<int>& vec1, std::vector<float>& vec2) {
     std::vector<float> vec2_minus_mean = vec_minus_mean(vec2);
 
     float sum = 0;
-    for(int i = 0; i < vec1_minus_mean.size();++i) {
-
+    for(unsigned int i = 0; i < vec1_minus_mean.size();++i) {
         sum += vec1_minus_mean.at(i) * vec2_minus_mean.at(i);
     }
     return sum / (vec1.size() * st_dev(vec1) * st_dev(vec2));
@@ -709,7 +716,6 @@ std::set<Student> Student_Store::read_school_records() {
                 records.insert(s);
             }
         }
-        std::cout << records.size() << " students are/have attended this school." << std::endl;
     } else {
         std::cerr << "Unable to read records" << std::endl;
     }
@@ -737,5 +743,85 @@ void Student_Store::clean_records() {
         std::cerr << "Unable to clean records" << std::endl;
     }
 
+}
 
+/**
+* Prints all students who have attended the school
+*/
+
+void Student_Store::read_records() {
+    std::cout << records.size() << " students have/are attending this school." << std::endl;
+    for(auto it = records.begin();it != records.end();++it) {
+        std::cout << *it << std::endl;
+    }
+}
+
+/**
+* Returns current GMT time as string
+* @return ss
+*/
+std::string Student_Store::get_time() {
+    // current date/time based on current system
+   time_t now = time(0);
+
+   // convert now to string form
+   char* dt = ctime(&now);
+
+   // convert now to tm struct for UTC
+   tm *gmtm = gmtime(&now);
+   dt = asctime(gmtm);
+
+   // Add to string stream so we can convert to string
+   std::stringstream ss;
+   ss << dt;
+
+   // Convert to string before return
+   return ss.str();
+}
+
+/**
+* Adds message and time method was called to log file
+* @param message
+*/
+void Student_Store::add_log(std::string message) {
+    // Append students instead of overwritting students
+    std::ofstream user_log("logs.txt",std::fstream::in | std::ios::out | std::ios::app);
+    if(user_log.is_open()) {
+       user_log << message << " " << get_time();
+       std::cout << std::endl;
+    } else {
+        std::cerr << "Unable to open log file" << std::endl;
+    }
+}
+
+/**
+* Returns a stack of all log messages from text file
+* @return logs
+*/
+std::stack<std::string> Student_Store::read_log() {
+    std::ifstream user_log("logs.txt");
+    std::stack<std::string> logs;
+    if(user_log.is_open()) {
+
+        std::string line;
+        while(getline(user_log, line)) {
+            logs.push(line);
+        }
+    } else {
+        std::cerr << "Could not read log file" << std::endl;
+    }
+    return logs;
+}
+
+/**
+* Prints logs First in last out
+* values reassigned after all values are popped off
+*/
+void Student_Store::print_log() {
+
+    while(!logs.empty()) {
+        std::cout << logs.top() << std::endl;
+        logs.pop();
+    }
+    logs = read_log();
 }

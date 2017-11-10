@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include <set>
+#include <stack>
 #include <string>
 #include <fstream>
 #include <algorithm>
@@ -12,6 +13,7 @@
 #include <cstring>
 #include <cctype>
 #include <math.h>
+//#include <ctime>
 
 #include "Student.h"
 
@@ -23,6 +25,14 @@ class Student_Store {
 private:
 
     std::map<std::string,std::vector<Student> > school_data; // Local storage
+    std::set<Student> records; // Permenant record of students
+
+    std::stack<std::string> logs;
+    std::stack<std::string> read_log();
+    std::string get_time();
+    void add_log(std::string message);
+
+    std::set<Student> read_school_records();
     std::map<std::string,std::vector<Student> > read_file();
     std::map<std::string,std::vector<Student> > back_up_data();
     void replace_characters(Student& s, char old_char, char new_char);
@@ -39,6 +49,9 @@ private:
 
     template <typename T>
     float st_dev(std::vector<T>& vec);
+
+    template <typename T>
+    float meadian(std::vector<T>& vec);
 
     template <typename T>
     std::vector<T> vec_minus_mean(std::vector<T>& vec);
@@ -77,16 +90,17 @@ public:
 
     void clean_records();
     void save_school_records();
-    std::set<Student> read_school_records();
+    void read_records();
 
 
     inline std::map<std::string, std::vector<Student> > get_map() const;
-
-
-    friend std::ostream& operator<<(std::ostream& output_stream, Student_Store& st);
     float pearson(std::vector<int>& vec1, std::vector<float>& vec2);
 
     std::vector<int> get_all_attendance();
     std::vector<float> get_all_gpa();
+
+    void print_log();
+
+    friend std::ostream& operator<<(std::ostream& output_stream, const Student_Store& st);
 
 };

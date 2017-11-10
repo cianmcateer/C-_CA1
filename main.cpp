@@ -9,6 +9,10 @@
 #include "Student_Store.h"
 #include "util.h"
 
+// Preprocessor macro variable when set to true
+// will skip password validation for testing purposes
+#define DEBUG false
+
 using std::string;
 using std::cout;
 using std::cin;
@@ -24,7 +28,7 @@ bool is_password(string password);
 * Initialise Program
 */
 int main(void) {
-    init();
+    DEBUG ? menu() : init();
     return 0;
 }
 
@@ -51,8 +55,6 @@ void init() {
     new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
     tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
     std::getline(cin, password_attempt);
-
-
 
     int attempt = 4;
     while(!is_password(password_attempt)) {
@@ -93,6 +95,9 @@ void read_file(const std::string path) {
 
 }
 
+/**
+* Local storage is initialised and allows user to choose from one of the options
+*/
 void menu() {
 
     int choice;
@@ -729,7 +734,6 @@ void menu() {
             case 22: {
                 cout << "Read records" << endl;
                 cout << "To read confidential school records please enter admin password" << endl;
-                std::set<Student> records = st.read_school_records();
 
                 // Allows us to hide user input for password
                 termios old_terminal; //
@@ -737,23 +741,27 @@ void menu() {
                 termios new_terminal = old_terminal;
                 new_terminal.c_lflag &= ~ECHO; // Erases characters on screen '&=' Combines assignment '=' and AND'&' bitwise operators
                 tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
-                cin.ignore();
 
+                cin.ignore();
                 string admin_password;
                 std::getline(cin, admin_password);
 
                 tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal); // Resets masked user input
 
                 if(admin_password == "admin_password") {
-                    for(const auto& s : records) {
-                        cout << s << endl;
-                    }
+                    st.read_records();
                 } else {
                     cout << "Incorrect admin password Access denied!" << endl;
                 }
                 break;
             }
 
+            case 23: {
+                cout << "View all alterations of data" << endl;
+                st.print_log();
+                break;
+            }
+            
             default: {
                 cout << "Invalid input please try again." << endl;
                 break;
