@@ -174,7 +174,11 @@ void Student_Store::print(std::vector<Student>& students) {
 */
 std::map<std::string,std::vector<Student> > Student_Store::read_file() {
 
-    std::ifstream student_file("test2.txt"); // test2.txt // test1.txt
+
+    std::ifstream student_file;
+    // Set 'FILE' variable to false to use test2.txt
+    FILE ? student_file.open("test1.txt") : student_file.open("test2.txt"); // test2.txt // test1.txt
+
     std::vector<Student> students;
 
     std::map<std::string,std::vector<Student> > map;
@@ -327,8 +331,8 @@ void Student_Store::remove_student(std::string& teacher, int& index) {
 * First whitespaces are replaced by '-' so we don't need to use a different delimeter
 */
 void Student_Store::save() {
-
-    std::ofstream save_file("test2.txt"); // test2.txt // test1.txt
+    std::ofstream save_file;
+    FILE ? save_file.open("test1.txt") : save_file.open("test2.txt"); // test2.txt // test1.txt
 
     if(save_file.is_open()) {
         for(auto& str : school_data) {

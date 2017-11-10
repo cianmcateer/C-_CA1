@@ -13,9 +13,12 @@
 #include <cstring>
 #include <cctype>
 #include <math.h>
-//#include <ctime>
+#include <ctime>
 
 #include "Student.h"
+
+// Set to false to use second text file
+#define FILE true
 
 /**
 * Local storage for all teachers and pupils
