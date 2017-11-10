@@ -269,7 +269,7 @@ void Student_Store::create_group(std::string& teacher) {
         school_data[teacher] = new_group;
         std::cout << teacher.substr(0,teacher.find(' ')) << " class has been created" << std::endl;
     }
-    add_log("Group created on ");
+    add_log("Group created on");
 }
 
 /**
@@ -285,10 +285,11 @@ void Student_Store::remove_group(std::string& teacher) {
 
     if(iter != school_data.end()) {
         school_data.erase(iter);
+        add_log("Group removed on ");
     } else {
         std::cout << "Teacher not found" << std::endl;
     }
-    add_log("Group removed on ");
+
 }
 
 /**
@@ -319,18 +320,16 @@ void Student_Store::remove_student(std::string& teacher, int& index) {
     for(unsigned int i = 0;i < school_data[teacher].size();++i) {
         if(index == i) {
             school_data[teacher].erase(school_data[teacher].begin() + i);
+            add_log("Student removed on");
         }
     }
-
-    add_log("Student removed on");
-
 }
 
 /**
 * Writes all map data to a text file using ofstream
 * First whitespaces are replaced by '-' so we don't need to use a different delimeter
 */
-void Student_Store::save() {
+void Student_Store::save(bool is_exit) {
     std::ofstream save_file;
     FILE ? save_file.open("test1.txt") : save_file.open("test2.txt"); // test2.txt // test1.txt
 
@@ -346,7 +345,12 @@ void Student_Store::save() {
                 save_file << s.get_name() << " " << s.get_age() << " "
                 << s.get_attendance() << " " << s.get_gpa()
                 << " " << s.get_comment() << " ";
+
+                if(!is_exit) {
+                    replace_characters(s,'-',' ');
+                }
             }
+
             save_file << std::endl;
         }
         save_file.close();
@@ -384,6 +388,7 @@ void Student_Store::create_webpage() {
     // Close off page and end connection
     html_page << "</body></html>";
     html_page.close();
+
 }
 
 /**
@@ -476,11 +481,16 @@ void Student_Store::search_age(int& age) {
 void Student_Store::search_text(std::string& text, int choice) {
     int count = 0;
 
+    std::string upper_text = upper_case(text);
+
     if(choice == 0) {
         int count = 0;
         for(auto& key : school_data) {
             for(const auto& s : key.second) {
-                if(s.get_name().find(text) != std::string::npos) {
+                std::string upper_name = s.get_name();
+                for(auto& c : upper_name) c = toupper(c);
+
+                if(upper_name.find(upper_text) != std::string::npos) {
                     std::cout << s << std::endl;
                     ++count;
                 }
@@ -491,7 +501,10 @@ void Student_Store::search_text(std::string& text, int choice) {
     } else {
         for(auto& key : school_data) {
             for(const auto& s : key.second) {
-                if(s.get_comment().find(text) != std::string::npos) {
+                std::string upper_comment = s.get_comment();
+
+                for(auto& c : upper_comment) c = toupper(c);
+                if(upper_comment.find(upper_text) != std::string::npos) {
                     std::cout << s << std::endl;
                     ++count;
                 }
@@ -700,6 +713,10 @@ void Student_Store::save_school_records() {
     }
 }
 
+/**
+* Reads records into a set, eliminating duplicates
+* @return records
+*/
 std::set<Student> Student_Store::read_school_records() {
     std::ifstream read_records("records.txt");
 

@@ -16,6 +16,7 @@
 #include <ctime>
 
 #include "Student.h"
+#include "util.h"
 
 // Set to false to use second text file
 #define FILE true
@@ -79,7 +80,7 @@ public:
     void print_index(std::string& teacher);
     void display_group(std::string& teacher); //
     void create_group(std::string& teacher);
-    void save(); // Done
+    void save(bool is_exit); // Done
     void create_webpage();
     bool is_full(std::string& teacher);
     void top_ten();

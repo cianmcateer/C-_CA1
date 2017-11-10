@@ -31,3 +31,8 @@ bool is_password(std::string password) {
     const std::string user_password = "password";
     return user_password == password;
 }
+
+std::string upper_case(std::string& x) {
+    for(auto& c : x) c = toupper(c);
+    return x;
+}

@@ -5,6 +5,8 @@
 #include <vector>
 #include <termios.h>
 #include <unistd.h>
+#include <cctype>
+#include <algorithm>
 
 #include "Student.h"
 #include "Student_Store.h"
@@ -132,7 +134,14 @@ void menu() {
                 if(sort_type == 1) {
                     cout << "Sorted by Name." << endl;
                     std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
-                        return s1.get_name() < s2.get_name();
+
+                        std::string upper_name1 = s1.get_name();
+                        std::string upper_name2 = s2.get_name();
+
+                        for(auto& c : upper_name1) c = toupper(c);
+                        for(auto& c : upper_name2) c = toupper(c);
+
+                        return upper_name1 < upper_name2;
                     });
                     st.print(students);
                 } else if(sort_type == 2) {
@@ -157,7 +166,13 @@ void menu() {
                 } else if (sort_type == 5) {
                     cout << "Sorted by Comments." << endl;
                     std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
-                        return s1.get_comment() < s2.get_comment();
+                        std::string upper_comment1 = s1.get_comment();
+                        std::string upper_comment2 = s2.get_comment();
+
+                        for(auto& c : upper_comment1) c = toupper(c);
+                        for(auto& c : upper_comment2) c = toupper(c);
+
+                        return upper_comment1 < upper_comment2;
                     });
                     st.print(students);
                 }
@@ -578,7 +593,7 @@ void menu() {
             }
 
             case 14: {
-                st.save();
+                st.save(false);
                 cout << "Data has been saved!" << endl;
                 break;
             }
@@ -618,7 +633,7 @@ void menu() {
             }
 
             case 16: {
-                st.save();
+                st.save(true);
                 cout << "Your data has been saved" << endl;
                 cout << "Goodbye!" << endl;
                 exit(0);
