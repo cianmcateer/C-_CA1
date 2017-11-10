@@ -12,7 +12,7 @@
 
 // Preprocessor macro variable when set to true
 // will skip password validation for testing purposes
-#define DEBUG false
+#define DEBUG true
 
 using std::string;
 using std::cout;
@@ -148,7 +148,20 @@ void menu() {
                         return s1.get_gpa() > s2.get_gpa();
                     });
                     st.print(students);
-                } else {
+                } else if (sort_type == 4) {
+                    cout << "Sorted by Attendance." << endl;
+                    std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
+                        return s1.get_attendance() > s2.get_attendance();
+                    });
+                    st.print(students);
+                } else if (sort_type == 5) {
+                    cout << "Sorted by Comments." << endl;
+                    std::sort(students.begin(),students.end(),[](const Student& s1, const Student& s2) -> bool {
+                        return s1.get_comment() < s2.get_comment();
+                    });
+                    st.print(students);
+                }
+                 else {
                     cout << "Invalid input" << endl;
                 }
 
