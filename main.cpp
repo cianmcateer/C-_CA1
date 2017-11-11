@@ -87,7 +87,7 @@ void menu() {
     Student_Store st;
 
     while(true) {
-        read_file("files/help.txt"); // Help menu
+        read_file("menus/help.txt"); // Help menu
         while(!(cin >> choice)) { // Input validation only accepts integers
             cout << "Sorry please enter a number" << endl;
             cin.clear();
@@ -121,7 +121,7 @@ void menu() {
 
                 cout << "Please enter choose from one of the following options." << endl;
 
-                read_file("files/sort_options.txt");
+                read_file("menus/sort_options.txt");
 
                 int sort_type;
 
