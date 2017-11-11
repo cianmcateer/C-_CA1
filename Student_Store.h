@@ -30,8 +30,8 @@ private:
 
     std::map<std::string,std::vector<Student> > school_data; // Local storage
     std::set<Student> records; // Permenant record of students
-
     std::stack<std::string> logs;
+
     std::stack<std::string> read_log();
     std::string get_time();
     void add_log(std::string message);

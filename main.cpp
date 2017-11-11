@@ -14,7 +14,7 @@
 
 // Preprocessor macro variable when set to true
 // will skip password validation for testing purposes
-#define DEBUG true
+#define DEBUG false
 
 using std::string;
 using std::cout;
@@ -176,7 +176,7 @@ void menu() {
                     });
                     st.print(students);
                 }
-                 else {
+                else {
                     cout << "Invalid input" << endl;
                 }
 

@@ -13,6 +13,7 @@ Student_Store::~Student_Store() {}
 
 /**
 * Returns a map of teachers and students that will be called if file read fails
+* @return map
 */
 std::map<std::string,std::vector<Student> > Student_Store::back_up_data() {
 
@@ -72,7 +73,7 @@ void Student_Store::replace_characters(Student& s, char old_char, char new_char)
 */
 void Student_Store::add(std::string& teacher, const Student& s) {
     school_data[teacher].push_back(s);
-    add_log("Student added on");
+    add_log(s.get_name() + " was added on");
 }
 
 /**
@@ -269,7 +270,7 @@ void Student_Store::create_group(std::string& teacher) {
         school_data[teacher] = new_group;
         std::cout << teacher.substr(0,teacher.find(' ')) << " class has been created" << std::endl;
     }
-    add_log("Group created on");
+    add_log(teacher + "'s Group was created on");
 }
 
 /**
@@ -285,7 +286,7 @@ void Student_Store::remove_group(std::string& teacher) {
 
     if(iter != school_data.end()) {
         school_data.erase(iter);
-        add_log("Group removed on ");
+        add_log(teacher + "'s group was removed on ");
     } else {
         std::cout << "Teacher not found" << std::endl;
     }
@@ -320,7 +321,7 @@ void Student_Store::remove_student(std::string& teacher, int& index) {
     for(unsigned int i = 0;i < school_data[teacher].size();++i) {
         if(index == i) {
             school_data[teacher].erase(school_data[teacher].begin() + i);
-            add_log("Student removed on");
+            add_log("A student in " + teacher + "'s group was removed on");
         }
     }
 }
@@ -699,8 +700,8 @@ void Student_Store::save_school_records() {
     std::ofstream save_records("records.txt",std::fstream::in | std::ios::out | std::ios::app);
 
     if(save_records.is_open()) {
-        for(auto& key : school_data) {
-            for(auto& s : key.second) {
+        for(auto key : school_data) {
+            for(auto s : key.second) {
                 replace_characters(s,' ','-');
                 save_records << s.get_name() << " " << s.get_age() << " " << s.get_attendance()
                 << " " << s.get_gpa() << " " << s.get_comment() << std::endl;
@@ -769,9 +770,9 @@ void Student_Store::clean_records() {
 /**
 * Prints all students who have attended the school
 */
-
 void Student_Store::read_records() {
     std::cout << records.size() << " students have/are attending this school." << std::endl;
+
     for(auto it = records.begin();it != records.end();++it) {
         std::cout << *it << std::endl;
     }
@@ -841,8 +842,9 @@ std::stack<std::string> Student_Store::read_log() {
 void Student_Store::print_log() {
 
     while(!logs.empty()) {
+        // Print last element added to stack
         std::cout << logs.top() << std::endl;
-        logs.pop();
+        logs.pop(); // Pop element off to print next element
     }
-    logs = read_log();
+    logs = read_log(); // Reassign elements to stack
 }
