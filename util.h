@@ -5,6 +5,12 @@
 #include <regex>
 #include <fstream>
 
+/**
+* Returns true if input is positive
+* can accept both floats and integer types
+* @param t
+* @return bool
+*/
 template <typename T> bool is_pos(T t) {
     return t >= 0;
 }
