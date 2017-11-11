@@ -437,130 +437,134 @@ void menu() {
                 cout << "Enter teacher name" << endl;
                 string teacher;
                 std::getline(cin, teacher);
+                if(st.class_empty(teacher)) {
+                    cout << "Sorry, there are no students in " << teacher << "'s class yet." << endl;
+                } else {
+                    const string name_regex = "[a-z\A-Z ,.'-]+$";
 
-                const string name_regex = "[a-z\A-Z ,.'-]+$";
-
-                while(!is_correct(teacher, name_regex)) {
-                    cout << "please try again" << endl;
-                    cin.clear();
-                    std::getline(cin, teacher);
-
-                    if(is_correct(teacher, name_regex)) {
-                        break;
-                    }
-                }
-
-                cout << "Enter student index" << endl;
-                st.print_index(teacher);
-
-                int student_at;
-                cin >> student_at;
-
-                while(cin.fail() || !is_pos(student_at) || !st.in_range(teacher, student_at)) {
-
-                    if(!is_pos(student_at)) {
-                        cout << "Please enter a positive index" << endl;
-                    }
-                    if(cin.fail()) {
-                        cout << "Please enter a number" << endl;
+                    while(!is_correct(teacher, name_regex)) {
+                        cout << "please try again" << endl;
                         cin.clear();
-                        cin.ignore(256, '\n');
+                        std::getline(cin, teacher);
+
+                        if(is_correct(teacher, name_regex)) {
+                            break;
+                        }
                     }
-                    if(!st.in_range(teacher, student_at)) {
-                        cout << "Index out of range" << endl;
-                    }
-                    cout << "Invalid input, please try again" << endl;
-                    cin.clear();
+
+                    cout << "Enter student index" << endl;
+                    st.print_index(teacher);
+
+                    int student_at;
                     cin >> student_at;
-                }
 
-                cin.ignore();
+                    while(cin.fail() || !is_pos(student_at) || !st.in_range(teacher, student_at)) {
 
-                cout << "Enter new student name (enter 's' for no change)" << endl;
-                string name;
-                std::getline(cin, name);
+                        if(!is_pos(student_at)) {
+                            cout << "Please enter a positive index" << endl;
+                        }
+                        if(cin.fail()) {
+                            cout << "Please enter a number" << endl;
+                            cin.clear();
+                            cin.ignore(256, '\n');
+                        }
+                        if(!st.in_range(teacher, student_at)) {
+                            cout << "Index out of range" << endl;
+                        }
+                        cout << "Invalid input, please try again" << endl;
+                        cin.clear();
+                        cin >> student_at;
+                    }
 
-                while(!is_correct(name, name_regex)) {
-                    cout << "please try again" << endl;
-                    cin.clear();
+                    cin.ignore();
+
+                    cout << "Enter new student name (enter 's' for no change)" << endl;
+                    string name;
                     std::getline(cin, name);
 
-                    if(is_correct(name, name_regex)) {
-                        break;
-                    }
-                }
-
-                cout << "Change student age (enter -1 to leave the same)" << endl;
-                int age;
-                cin >> age;
-
-                while(cin.fail() || age < -1 || age > 18) {
-                    cout << "Invalid input, please try again" << endl;
-                    if(age < -1) {
-                        cout << "Please enter a positive index (or -1 to leave unchanged)" << endl;
-                    }
-                    if(cin.fail()) {
-                        cout << "Please enter a number" << endl;
+                    while(!is_correct(name, name_regex)) {
+                        cout << "please try again" << endl;
                         cin.clear();
-                        cin.ignore(256, '\n');
+                        std::getline(cin, name);
+
+                        if(is_correct(name, name_regex)) {
+                            break;
+                        }
                     }
-                    if(age > 18) {
-                        cout << "Sorry, students most be under 18 to attend" << endl;
-                    }
-                    cin.clear();
+
+                    cout << "Change student age (enter -1 to leave the same)" << endl;
+                    int age;
                     cin >> age;
-                }
 
-                cout << "Change student attendance (enter -1 to leave the same)" << endl;
-                int attendance;
-                cin >> attendance;
-
-                while(cin.fail() || attendance < -1 || attendance > 100) {
-                    cout << "Invalid input" << endl;
-
-                    if(cin.fail()) {
-                        cout << "No characters allowed" << endl;
+                    while(cin.fail() || age < -1 || age > 18) {
+                        cout << "Invalid input, please try again" << endl;
+                        if(age < -1) {
+                            cout << "Please enter a positive index (or -1 to leave unchanged)" << endl;
+                        }
+                        if(cin.fail()) {
+                            cout << "Please enter a number" << endl;
+                            cin.clear();
+                            cin.ignore(256, '\n');
+                        }
+                        if(age > 18) {
+                            cout << "Sorry, students most be under 18 to attend" << endl;
+                        }
                         cin.clear();
-                        cin.ignore(256, '\n');
+                        cin >> age;
                     }
-                    if(attendance < -1) {
-                        cout << "Please enter a positive (or -1 to leave unchanged)" << endl;
-                    }
-                    if(attendance > 100) {
-                        cout << "Attendance is only marked out of 100" << endl;
-                    }
-                    cin.clear();
+
+                    cout << "Change student attendance (enter -1 to leave the same)" << endl;
+                    int attendance;
                     cin >> attendance;
-                }
 
-                cout << "Change student gpa (enter -1 to leave the same)" << endl;
-                float gpa;
-                cin >> gpa;
+                    while(cin.fail() || attendance < -1 || attendance > 100) {
+                        cout << "Invalid input" << endl;
 
-                while(cin.fail() || gpa < -1 || gpa > 100) {
-                    cout << "Invalid input" << endl;
-
-                    if(cin.fail()) {
-                        cout << "No characters allowed" << endl;
+                        if(cin.fail()) {
+                            cout << "No characters allowed" << endl;
+                            cin.clear();
+                            cin.ignore(256, '\n');
+                        }
+                        if(attendance < -1) {
+                            cout << "Please enter a positive (or -1 to leave unchanged)" << endl;
+                        }
+                        if(attendance > 100) {
+                            cout << "Attendance is only marked out of 100" << endl;
+                        }
                         cin.clear();
-                        cin.ignore(256, '\n');
+                        cin >> attendance;
                     }
-                    if(gpa < -1) {
-                        cout << "Please enter a positive (or -1 to leave unchanged)" << endl;
-                    }
-                    if(gpa > 100) {
-                        cout << "Grades are only marked out of 100" << endl;
-                    }
-                    cin.clear();
+
+                    cout << "Change student gpa (enter -1 to leave the same)" << endl;
+                    float gpa;
                     cin >> gpa;
+
+                    while(cin.fail() || gpa < -1 || gpa > 100) {
+                        cout << "Invalid input" << endl;
+
+                        if(cin.fail()) {
+                            cout << "No characters allowed" << endl;
+                            cin.clear();
+                            cin.ignore(256, '\n');
+                        }
+                        if(gpa < -1) {
+                            cout << "Please enter a positive (or -1 to leave unchanged)" << endl;
+                        }
+                        if(gpa > 100) {
+                            cout << "Grades are only marked out of 100" << endl;
+                        }
+                        cin.clear();
+                        cin >> gpa;
+                    }
+
+                    cin.ignore();
+                    cout << "Change comment (enter 's' for no change)" << endl;
+                    std::string comment;
+                    std::getline(cin, comment);
+
+                    st.update(teacher, student_at, name, age, attendance, gpa, comment);
+
                 }
-
-                cin.ignore();
-                cout << "Change comment (enter 's' for no change)" << endl;
-                std::string comment;
-                std::getline(cin, comment);
-
-                st.update(teacher, student_at,name,age,attendance,gpa,comment);
 
                 break;
             }
