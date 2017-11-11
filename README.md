@@ -12,32 +12,3 @@ students and teacher. Display of correlation coefficient between that uses templ
 without slowing down compiler speed. Other side features include input validation and password protected features such 
 as the ability to view records and delete all groups.
 
-Menu:
-/************************************************************/
-*                       E-SCHOOL                            *
-*    Hello, please choose from one of the following options *
-*    0. exit without save                                   *
-*    1. Display Classes                                     *
-*    2. Display Students                                    *
-*    3. Custom sort                                         *
-*    4. Top students                                        *
-*    5. Failing students                                    *
-*    6. Search by age                                       *
-*    7. Search by name                                      *
-*    8. Search by Comment                                   *
-*    9. Search by Grade                                     *
-*    10. Add Student                                        *
-*    11. Update Student                                     *
-*    12. Create new group                                   *
-*    13. Create webpage                                     *
-*    14. Save data                                          *
-*    15. Clear data (password protected)                    *
-*    16. Exit and Save                                      *
-*    17. Remove group                                       *
-*    18. Remove student                                     *
-*    19. Average grade per group                            *
-*    20. Correlation Coefficient                            *
-*    21. Add students to school records                     *
-*    22. Display records                                    *
-*    23. Read logs                                          *
-/************************************************************/
