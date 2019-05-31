@@ -14,7 +14,7 @@
 
 // Preprocessor macro variable when set to true
 // will skip password validation for testing purposes
-#define DEBUG false
+#define DEBUG true
 
 using std::string;
 using std::cout;
